@@ -306,6 +306,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\src\client.cpp" />
+    <ClInclude Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\src\Connection.h" />
+    <ClInclude Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\src\Terminal.h" />
+    <ClInclude Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\src\UDPConnection.h" />
+    <ClInclude Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\src\TCPConnection.h" />
+    <ClInclude Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\src\MotherClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\Build\ZERO_CHECK.vcxproj">
@@ -314,9 +319,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\client.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

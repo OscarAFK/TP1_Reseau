@@ -17,24 +17,24 @@
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
 
-class Client {
+class client {
 	public:
 		int runClient();
 		int initialisationWinsock();
-		int initialisationWinsock();
 		int createSocket();
-		void connectServeur();
+		int connectServeur();
 		int initBuffer();
 		int connexionShutdown();
+		int Getaddrinfo(char* addr);
 
 	private:
-		WSADATA wsaData;
-		SOCKET ConnectSocket = INVALID_SOCKET;
-		struct addrinfo* result = NULL,
-			* ptr = NULL,
-			hints;
-		const char* sendbuf = "this is a test";
-		char recvbuf[DEFAULT_BUFLEN];
-		int iResult;
-		int recvbuflen = DEFAULT_BUFLEN;
+		WSADATA m_wsaData;
+		SOCKET m_ConnectSocket = INVALID_SOCKET;
+		struct addrinfo* m_result = NULL,
+			* m_ptr = NULL,
+			m_hints;
+		const char* m_sendbuf = "this is a test";
+		char m_recvbuf[DEFAULT_BUFLEN];
+		int m_iResult;
+		int m_recvbuflen = DEFAULT_BUFLEN;
 };
