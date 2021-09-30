@@ -170,13 +170,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\Build\client.vcxproj">
-      <Project>{1FBA6F80-D43E-346B-A562-52828893E6B0}</Project>
-      <Name>client</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\Build\server.vcxproj">
-      <Project>{3879E61C-B22D-3E57-81C6-AEBB789AAC63}</Project>
-      <Name>server</Name>
+    <ProjectReference Include="C:\Users\otros\Documents\GitHub\TP1_Reseau\Build\TP1_Reseau.vcxproj">
+      <Project>{04EC5713-9A8D-3A3B-A853-6CCCB07C3343}</Project>
+      <Name>TP1_Reseau</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
