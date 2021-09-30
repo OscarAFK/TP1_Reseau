@@ -35,10 +35,14 @@ int __cdecl main(int argc, char** argv)
     }
 
     // Initialize Winsock
-    iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (iResult != 0) {
-        printf("WSAStartup failed with error: %d\n", iResult);
-        return 1;
+    int client::initialisationWinsock()
+    {
+        this->m_iResult = WSAStartup(MAKEWORD(2, 2), &this->m_wsaData);
+        if (this->m_iResult != 0) {
+            printf("WSAStartup failed with error: %d\n", this->m_iResult);
+            return 1;
+        }
+        return 0;
     }
 
     ZeroMemory(&hints, sizeof(hints));
@@ -47,33 +51,42 @@ int __cdecl main(int argc, char** argv)
     hints.ai_protocol = IPPROTO_TCP;
 
     // Resolve the server address and port
-    iResult = getaddrinfo(argv[1], DEFAULT_PORT, &hints, &result);
-    if (iResult != 0) {
-        printf("getaddrinfo failed with error: %d\n", iResult);
-        WSACleanup();
-        return 1;
+    int client::getaddrinfo() {
+        this->m_iResult = getaddrinfo(argv[1], DEFAULT_PORT, &this->m_hints, &this->m_result);
+        if (this->m_iResult != 0) {
+            printf("getaddrinfo failed with error: %d\n", this->m_iResult);
+            WSACleanup();
+            return 1;
+        }
+        return 0;
     }
 
     // Attempt to connect to an address until one succeeds
     for (ptr = result; ptr != NULL; ptr = ptr->ai_next) {
 
         // Create a SOCKET for connecting to server
-        ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
-            ptr->ai_protocol);
-        if (ConnectSocket == INVALID_SOCKET) {
-            printf("socket failed with error: %ld\n", WSAGetLastError());
-            WSACleanup();
-            return 1;
+        int client::createSocket() {
+            this->m_ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
+                ptr->ai_protocol);
+            if (this->m_ConnectSocket == INVALID_SOCKET) {
+                printf("socket failed with error: %ld\n", WSAGetLastError());
+                WSACleanup();
+                return 1;
+            }
+            return 0;
         }
 
         // Connect to server.
-        iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
-        if (iResult == SOCKET_ERROR) {
-            closesocket(ConnectSocket);
-            ConnectSocket = INVALID_SOCKET;
-            continue;
+        
+        void client::connectServeur() {
+            this->m_iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+            if (this->m_iResult == SOCKET_ERROR) {
+                closesocket(ConnectSocket);
+                ConnectSocket = INVALID_SOCKET;
+                continue;
+            }
+            break;
         }
-        break;
     }
 
     freeaddrinfo(result);
@@ -85,28 +98,32 @@ int __cdecl main(int argc, char** argv)
     }
 
     // Send an initial buffer
-    iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
-    if (iResult == SOCKET_ERROR) {
-        printf("send failed with error: %d\n", WSAGetLastError());
-        closesocket(ConnectSocket);
-        WSACleanup();
-        return 1;
+    int client::initBuffer() {
+        this->m_iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
+        if (this->m_iResult == SOCKET_ERROR) {
+            printf("send failed with error: %d\n", WSAGetLastError());
+            closesocket(ConnectSocket);
+            WSACleanup();
+            return 1;
+        }
+        return 0;
+        printf("Bytes Sent: %ld\n", iResult);
     }
 
-    printf("Bytes Sent: %ld\n", iResult);
-
     // shutdown the connection since no more data will be sent
-    iResult = shutdown(ConnectSocket, SD_SEND);
-    if (iResult == SOCKET_ERROR) {
-        printf("shutdown failed with error: %d\n", WSAGetLastError());
-        closesocket(ConnectSocket);
-        WSACleanup();
-        return 1;
+    int client::connexionShutdown() {
+        this->m_iResult = shutdown(ConnectSocket, SD_SEND);
+        if (this->m_iResult == SOCKET_ERROR) {
+            printf("shutdown failed with error: %d\n", WSAGetLastError());
+            closesocket(ConnectSocket);
+            WSACleanup();
+            return 1;
+        }
+        return 0;
     }
 
     // Receive until the peer closes the connection
     do {
-
         iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0)
             printf("Bytes received: %d\n", iResult);
