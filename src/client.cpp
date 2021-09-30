@@ -106,7 +106,7 @@ void Client::runClient() {
     connexionShutdown();
 
     // Receive until the peer closes the connection
-    do {
+    /*do {
         iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0)
             printf("Bytes received: %d\n", iResult);
@@ -115,7 +115,7 @@ void Client::runClient() {
         else
             printf("recv failed with error: %d\n", WSAGetLastError());
 
-    } while (iResult > 0);
+    } while (iResult > 0);*/
 
     // cleanup
     closesocket(ConnectSocket);
