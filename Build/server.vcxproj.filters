@@ -13,4 +13,9 @@
       <UniqueIdentifier>{66148059-FD8F-35CB-8314-5D074A1DF281}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\server.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
