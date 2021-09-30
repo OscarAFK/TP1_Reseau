@@ -7,5 +7,5 @@ project ("TP1_Reseau")
 
 add_subdirectory(src)
 
-add_executable("client" "src/client.cpp")
-add_executable("server" "src/server.cpp")
+add_executable("client" "src/client.cpp" "src/Connection.h" "src/Terminal.h" "src/UDPConnection.h" "src/TCPConnection.h" "src/MotherClass.h")
+add_executable("server" "src/server.cpp" "src/Connection.h" "src/Terminal.h" "src/UDPConnection.h" "src/TCPConnection.h" "src/MotherClass.h")
