@@ -7,7 +7,10 @@ project ("TP1_Reseau")
 
 set(${PROJECT_NAME}_SRC 
                         "src/client.cpp"
-                        "src/server.cpp")
+                        "src/server.cpp"
+						"src/Terminal.cpp"
+						"src/Connection.cpp"
+						)
 
 set(${PROJECT_NAME}_HEADERS "src/client.h"
                             "src/server.h"

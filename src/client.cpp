@@ -1,6 +1,6 @@
 #include "client.h"
 
-int client::initialisationWinsock()
+int Client::initialisationWinsock()
 {
     m_iResult = WSAStartup(MAKEWORD(2, 2), &this->m_wsaData);
     if (m_iResult != 0) {
@@ -9,7 +9,7 @@ int client::initialisationWinsock()
     }
     return 0;
 }
-int client::Getaddrinfo(char* addr) {
+int Client::Getaddrinfo(char* addr) {
     m_iResult = getaddrinfo(addr, DEFAULT_PORT, &m_hints, &m_result);
     if (m_iResult != 0) {
         printf("getaddrinfo failed with error: %d\n", m_iResult);
@@ -19,7 +19,7 @@ int client::Getaddrinfo(char* addr) {
     return 0;
 }
 
-int client::createSocket() {
+int Client::createSocket() {
     m_ConnectSocket = socket(m_ptr->ai_family, m_ptr->ai_socktype,
         m_ptr->ai_protocol);
     if (m_ConnectSocket == INVALID_SOCKET) {
@@ -30,7 +30,7 @@ int client::createSocket() {
     return 0;
 }
 
-int client::connectServeur() {
+int Client::connectServeur() {
     m_iResult = connect(m_ConnectSocket, m_ptr->ai_addr, (int)m_ptr->ai_addrlen);
     if (m_iResult == SOCKET_ERROR) {
         closesocket(m_ConnectSocket);
@@ -40,7 +40,7 @@ int client::connectServeur() {
     return 0;
 }
 
-int client::initBuffer() {
+int Client::initBuffer() {
     m_iResult = send(m_ConnectSocket, m_sendbuf, (int)strlen(m_sendbuf), 0);
     if (m_iResult == SOCKET_ERROR) {
         printf("send failed with error: %d\n", WSAGetLastError());
@@ -52,7 +52,7 @@ int client::initBuffer() {
     printf("Bytes Sent: %ld\n", m_iResult);
 }
 
-int client::connexionShutdown() {
+int Client::connexionShutdown() {
     m_iResult = shutdown(m_ConnectSocket, SD_SEND);
     if (m_iResult == SOCKET_ERROR) {
         printf("shutdown failed with error: %d\n", WSAGetLastError());
@@ -63,7 +63,7 @@ int client::connexionShutdown() {
     return 0;
 }
 
-int client::runClient() {
+int Client::runClient() {
     
     // Initialize Winsock
     initialisationWinsock();

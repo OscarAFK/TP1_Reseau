@@ -15,7 +15,7 @@
 #define DEFAULT_PORT "27015"
 
 
-class server
+class Server
 {
 private:
     WSADATA     m_wsaData;
@@ -27,9 +27,9 @@ private:
     struct addrinfo* m_result = NULL;
     struct addrinfo m_hints;
 
-    int         m_iSendResult;
-    char        m_recvbuf[DEFAULT_BUFLEN];
-    int         m_recvbuflen = DEFAULT_BUFLEN;
+    //int         m_iSendResult;
+    //char        m_recvbuf[DEFAULT_BUFLEN];
+    //int         m_recvbuflen = DEFAULT_BUFLEN;
 public:
 
     int initServer();

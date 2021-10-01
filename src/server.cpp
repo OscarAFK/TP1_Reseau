@@ -1,7 +1,8 @@
 #include "server.h"
 
-int server::initServer()
+int Server::initServer()
 {
+    /*
     // Initialize Winsock
     m_iResult = WSAStartup(MAKEWORD(2, 2), &m_wsaData);
     if (m_iResult != 0) {
@@ -15,19 +16,19 @@ int server::initServer()
     m_hints.ai_protocol = IPPROTO_TCP;
     m_hints.ai_flags = AI_PASSIVE;
 
-    // Resolve the server address and port
+    // Resolve the Server address and port
     m_iResult = getaddrinfo(NULL, DEFAULT_PORT, &m_hints, &m_result);
     if (m_iResult != 0) {
         printf("getaddrinfo failed with error: %d\n", m_iResult);
         WSACleanup();
         return 1;
     }
-    return 0;
+    return 0;*/
 }
 
-int server::createSocket()
+int Server::createSocket()
 {
-    // Create a SOCKET for connecting to server
+    // Create a SOCKET for connecting to Server
     m_ListenSocket = socket(m_result->ai_family, m_result->ai_socktype, m_result->ai_protocol);
     if (m_ListenSocket == INVALID_SOCKET) {
         printf("socket failed with error: %ld\n", WSAGetLastError());
@@ -38,7 +39,7 @@ int server::createSocket()
     return 0;
 }
 
-int server::bindSocket()
+int Server::bindSocket()
 {
     // Setup the TCP listening socket
     m_iResult = bind(m_ListenSocket, m_result->ai_addr, (int)m_result->ai_addrlen);
@@ -53,7 +54,7 @@ int server::bindSocket()
     return 0;
 }
 
-int server::closeSocket()
+int Server::closeSocket()
 {
     return 0;
 
@@ -72,7 +73,7 @@ int server::closeSocket()
 
 }
 
-int server::listenClient()
+int Server::listenClient()
 {
     m_iResult = listen(m_ListenSocket, SOMAXCONN);
     if (m_iResult == SOCKET_ERROR) {
@@ -84,7 +85,7 @@ int server::listenClient()
     return 0;
 }
 
-int server::acceptClient()
+int Server::acceptClient()
 {
     // Accept a client socket
     m_ClientSocket = accept(m_ListenSocket, NULL, NULL);
@@ -94,12 +95,12 @@ int server::acceptClient()
         WSACleanup();
         return 1;
     }
-    // No longer need server socket
+    // No longer need Server socket
     closesocket(m_ListenSocket);
     return 0;
 }
 
-int server::sendData()
+int Server::sendData()
 {
     m_iSendResult = send(m_ClientSocket, m_recvbuf, m_iResult, 0);
     if (m_iSendResult == SOCKET_ERROR) {
@@ -112,8 +113,9 @@ int server::sendData()
     return 0;
 }
 
-int server::receiveData()
+int Server::receiveData()
 {
+    /*
     m_iResult = recv(m_ClientSocket, m_recvbuf, m_recvbuflen, 0);
     if (m_iResult > 0) {
         printf("Bytes received: %d\n", m_iResult);
@@ -127,5 +129,5 @@ int server::receiveData()
         WSACleanup();
         return 1;
     }
-    return 0;
+    return 0;*/
 }
