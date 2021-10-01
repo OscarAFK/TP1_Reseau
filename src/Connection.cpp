@@ -4,22 +4,22 @@
 
 void Connection::sendMessage()
 {
-    m_iSendResult = send(m_ClientSocket, m_recvbuf, m_iResult, 0);
-    if (m_iSendResult == SOCKET_ERROR) {
-        printf("send failed with error: %d\n", WSAGetLastError());
-        // closesocket(m_ConnectSocket);
+    m_iResult = send(m_ConnectSocket, m_recvbuf, m_iResult, 0);
+    if (m_iResult == SOCKET_ERROR) {
+        std::string error = "send failed with error: " + WSAGetLastError();
+        error.append("\n");
+        throw std::runtime_error(error);
         WSACleanup();
-        return 1;
     }
-    printf("Bytes sent: %d\n", m_iSendResult);
+    printf("Bytes sent: %d\n", m_iResult);
 }
 
 void Connection::receiveMessage()
 {
-    im_result = recv(m_ClientSocket, recvbuf, recvbuflen, 0);
-    if (im_result > 0)
-        printf("Bytes received: %d\n", im_result);
-    else if (im_result == 0)
+    m_iResult = recv(m_ConnectSocket, m_recvbuf, m_recvbuflen, 0);
+    if (m_iResult > 0)
+        printf("Bytes received: %d\n", m_iResult);
+    else if (m_iResult == 0)
         printf("Connection closed\n");
     else
         printf("recv failed with error: %d\n", WSAGetLastError());
@@ -28,7 +28,7 @@ void Connection::receiveMessage()
 Connection::Connection(char* addr, char* port)
 {
     WSADATA wsaData;
-    m_iResult = WSAStartup(MAKEWORD(2, 2), &this->m_wsaData);
+    m_iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (m_iResult != 0) {
         std::string error = "WSAStartup failed with error: " + m_iResult;
         error.append("\n");
