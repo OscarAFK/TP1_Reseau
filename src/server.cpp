@@ -1,8 +1,19 @@
 #include "server.h"
 
+void Server::setConnection(Connection newConnection){
+    this->m_connection = newConnection;
+}
+
+Connection Server::getConnection(){
+    return this->m_connection;
+}
+
+
+//----
+
 int Server::initServer()
 {
-    /*
+    
     // Initialize Winsock
     m_iResult = WSAStartup(MAKEWORD(2, 2), &m_wsaData);
     if (m_iResult != 0) {
@@ -23,11 +34,11 @@ int Server::initServer()
         WSACleanup();
         return 1;
     }
-    return 0;*/
+    return 0;
 }
-
 int Server::createSocket()
 {
+
     // Create a SOCKET for connecting to Server
     m_ListenSocket = socket(m_result->ai_family, m_result->ai_socktype, m_result->ai_protocol);
     if (m_ListenSocket == INVALID_SOCKET) {
@@ -115,7 +126,6 @@ int Server::sendData()
 
 int Server::receiveData()
 {
-    /*
     m_iResult = recv(m_ClientSocket, m_recvbuf, m_recvbuflen, 0);
     if (m_iResult > 0) {
         printf("Bytes received: %d\n", m_iResult);
@@ -129,5 +139,5 @@ int Server::receiveData()
         WSACleanup();
         return 1;
     }
-    return 0;*/
+    return 0;
 }

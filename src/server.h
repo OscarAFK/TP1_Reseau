@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "Connection.h"
+
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 // #pragma comment (lib, "Mswsock.lib")
@@ -18,6 +20,9 @@
 class Server
 {
 private:
+
+    Connection m_connection;
+
     WSADATA     m_wsaData;
     int         m_iResult;
 
@@ -32,6 +37,18 @@ private:
     //int         m_recvbuflen = DEFAULT_BUFLEN;
 public:
 
+
+    Server();       // Constructeur
+    ~Server();      // Destructeur
+
+
+    void setConnection(Connection newConnection);
+	Connection getConnection();
+
+
+    int RunServer();
+
+    //---
     int initServer();
 
     int createSocket();
@@ -43,7 +60,4 @@ public:
 
     int sendData();
     int receiveData();
-
-    server(/* args */) = default;
-    ~server() = default;
 };

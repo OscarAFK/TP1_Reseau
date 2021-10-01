@@ -9,9 +9,12 @@ class Terminal {
 
 private:
 	Server s;
-	Client c;
+	Client c; 
 
 public :
+
+	Terminal();
+	~Terminal();
 
 	Connection createConnection();
 };

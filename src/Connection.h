@@ -27,6 +27,7 @@ private :
 	int		m_recvbuflen = DEFAULT_BUFLEN;
 	char	m_recvbuf[DEFAULT_BUFLEN];
 
+	SOCKET m_ListenSocket = INVALID_SOCKET;
 	SOCKET m_ConnectSocket = INVALID_SOCKET;
 
 	int m_iResult;
@@ -38,7 +39,7 @@ private :
 public:
 	void sendMessage();
 	void receiveMessage();
-	Connection();
+	Connection(char* addr, char* port);
 	~Connection();	// mettre les close
 
 

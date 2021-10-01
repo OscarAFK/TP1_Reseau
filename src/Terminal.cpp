@@ -1,9 +1,10 @@
 #include "Terminal.h"
+#include "Connection.h"
 
 
 Connection Terminal::createConnection()
 {
 
 	
-	return Connection();
+	return Connection("localhost",NULL);
 }

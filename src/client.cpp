@@ -1,5 +1,16 @@
 #include "client.h"
 
+
+void Client::setConnection(Connection newConnection){
+    this->m_connection = newConnection;
+}
+
+Connection Client::getConnection(){
+    return this->m_connection;
+}
+//----
+
+/*
 int Client::initialisationWinsock()
 {
     m_iResult = WSAStartup(MAKEWORD(2, 2), &this->m_wsaData);
@@ -8,7 +19,11 @@ int Client::initialisationWinsock()
         return 1;
     }
     return 0;
+
 }
+    */
+
+    /*
 int Client::Getaddrinfo(char* addr) {
     m_iResult = getaddrinfo(addr, DEFAULT_PORT, &m_hints, &m_result);
     if (m_iResult != 0) {
@@ -18,7 +33,9 @@ int Client::Getaddrinfo(char* addr) {
     }
     return 0;
 }
+    */
 
+    /*
 int Client::createSocket() {
     m_ConnectSocket = socket(m_ptr->ai_family, m_ptr->ai_socktype,
         m_ptr->ai_protocol);
@@ -29,7 +46,10 @@ int Client::createSocket() {
     }
     return 0;
 }
+    */
 
+
+    /*
 int Client::connectServeur() {
     m_iResult = connect(m_ConnectSocket, m_ptr->ai_addr, (int)m_ptr->ai_addrlen);
     if (m_iResult == SOCKET_ERROR) {
@@ -39,7 +59,8 @@ int Client::connectServeur() {
     }
     return 0;
 }
-
+    */
+/*
 int Client::initBuffer() {
     m_iResult = send(m_ConnectSocket, m_sendbuf, (int)strlen(m_sendbuf), 0);
     if (m_iResult == SOCKET_ERROR) {
@@ -50,7 +71,7 @@ int Client::initBuffer() {
     }
     return 0;
     printf("Bytes Sent: %ld\n", m_iResult);
-}
+}*/
 
 int Client::connexionShutdown() {
     m_iResult = shutdown(m_ConnectSocket, SD_SEND);
@@ -95,7 +116,7 @@ int Client::runClient() {
     }
 
     // Send an initial buffer
-    initBuffer();
+    //initBuffer();
 
     // shutdown the connection since no more data will be sent
     connexionShutdown();
