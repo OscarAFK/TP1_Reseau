@@ -8,6 +8,11 @@ Connection Server::getConnection(){
     return this->m_connection;
 }
 
+int Server::RunServer()
+{
+    return 0;
+}
+
 
 //----
 

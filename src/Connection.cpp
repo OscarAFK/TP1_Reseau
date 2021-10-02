@@ -30,9 +30,7 @@ Connection::Connection(char* addr, char* port)
     WSADATA wsaData;
     m_iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (m_iResult != 0) {
-        std::string error = "WSAStartup failed with error: " + m_iResult;
-        error.append("\n");
-        throw std::runtime_error(error);
+        printf("WSAStartup failed with error: %d \n", m_iResult);
     }
 
     if (port == NULL)
@@ -40,29 +38,30 @@ Connection::Connection(char* addr, char* port)
 
     m_iResult = getaddrinfo(addr, port, &m_hints, &m_result);
     if (m_iResult != 0) {
-        std::string error = "getaddrinfo failed with error: " + m_iResult;
-        error.append("\n");
-        throw std::runtime_error(error);
+        printf("getaddrinfo failed with error: %d \n", m_iResult);
         WSACleanup();
     }
+    // Attempt to connect to an address until one succeeds
+    for (m_ptr = m_result; m_ptr != NULL; m_ptr = m_ptr->ai_next) {
 
-    //Create a SOCKET for connecting to the server
-    m_ConnectSocket = socket(m_ptr->ai_family, m_ptr->ai_socktype,
-        m_ptr->ai_protocol);
-    if (m_ConnectSocket == INVALID_SOCKET) {
-        std::string error = "socket failed with error: " + m_iResult;
-        error.append("\n");
-        throw std::runtime_error(error);
-        WSACleanup();
+        //Create a SOCKET for connecting to the server
+        m_ConnectSocket = socket(m_ptr->ai_family, m_ptr->ai_socktype,
+            m_ptr->ai_protocol);
+        if (m_ConnectSocket == INVALID_SOCKET) {
+            printf("socket failed with error: %d \n", m_iResult);
+            WSACleanup();
+        }
+
+        // Connect to server.
+        m_iResult = connect(m_ConnectSocket, m_ptr->ai_addr, (int)m_ptr->ai_addrlen);
+        if (m_iResult == SOCKET_ERROR) {
+            closesocket(m_ConnectSocket);
+            m_ConnectSocket = INVALID_SOCKET;
+            continue;
+        }
+        break;
     }
 
-    // Connect to server.
-    m_iResult = connect(m_ConnectSocket, m_ptr->ai_addr, (int)m_ptr->ai_addrlen);
-    if (m_iResult == SOCKET_ERROR) {
-        closesocket(m_ConnectSocket);
-        m_ConnectSocket = INVALID_SOCKET;
-        throw std::runtime_error("Couldn't connect to the server");
-    }
 
     ////////TOUT CA EST A METTRE DANS LA CLASSE TERMINAL
     //// Initialize Winsock

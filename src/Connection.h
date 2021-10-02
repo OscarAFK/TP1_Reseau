@@ -38,6 +38,7 @@ public:
 	void sendMessage();
 	void receiveMessage();
 	Connection(char* addr, char* port);
+	Connection()= default;
 	~Connection();	// mettre les close
 
 

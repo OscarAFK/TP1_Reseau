@@ -4,7 +4,5 @@
 
 Connection Terminal::createConnection()
 {
-
-	
-	return Connection("localhost",NULL);
+	return Connection("localhost", NULL);
 }

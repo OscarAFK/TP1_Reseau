@@ -13,8 +13,8 @@ private:
 
 public :
 
-	Terminal();
-	~Terminal();
+	Terminal() = default;
+	~Terminal() = default;
 
 	Connection createConnection();
 };

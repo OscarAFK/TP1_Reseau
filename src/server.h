@@ -36,8 +36,8 @@ private:
 public:
 
 
-    Server();       // Constructeur
-    ~Server();      // Destructeur
+    Server() = default;       // Constructeur
+    ~Server() = default;      // Destructeur
 
 
     void setConnection(Connection newConnection);

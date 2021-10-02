@@ -87,7 +87,7 @@ int Client::connexionShutdown() {
 int Client::runClient() {
     
     // Initialize Winsock
-    initialisationWinsock();
+    //initialisationWinsock();
 
     ZeroMemory(&m_hints, sizeof(m_hints));
     m_hints.ai_family = AF_UNSPEC;
@@ -95,19 +95,19 @@ int Client::runClient() {
     m_hints.ai_protocol = IPPROTO_TCP;
 
     // Resolve the server address and port
-    Getaddrinfo("127.0.0.1");
+    //Getaddrinfo("127.0.0.1");
 
     // Attempt to connect to an address until one succeeds
     for (m_ptr = m_result; m_ptr != NULL; m_ptr = m_ptr->ai_next) {
 
         // Create a SOCKET for connecting to server
-        createSocket();
+        //createSocket();
 
         // Connect to server.
-        connectServeur();
+        //connectServeur();
     }
 
-    freeaddrinfo(m_result);
+    //freeaddrinfo(m_result);
 
     if (m_ConnectSocket == INVALID_SOCKET) {
         printf("Unable to connect to server!\n");
@@ -119,7 +119,7 @@ int Client::runClient() {
     //initBuffer();
 
     // shutdown the connection since no more data will be sent
-    connexionShutdown();
+    //connexionShutdown();
 
     // Receive until the peer closes the connection
     /*do {

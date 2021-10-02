@@ -19,8 +19,8 @@
 class Client {
 	public:
 
-		Client();		// constructeur
-		~Client();		// destructeur
+		Client() = default;		// constructeur
+		~Client() = default;		// destructeur
 
 		void setConnection(Connection newConnection);
 		Connection getConnection();
