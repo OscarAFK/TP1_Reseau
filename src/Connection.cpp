@@ -12,7 +12,7 @@ void Connection::sendMessage(char * message)
     //printf("Bytes sent: %d\n", m_iResult);
 }
 
-void Connection::receiveMessage(char * recvbuf)
+int Connection::receiveMessage(char * recvbuf)
 {
     m_iResult = recv(m_ConnectSocket, recvbuf, (int)strlen(recvbuf)+1, 0);
     if (m_iResult > 0)
@@ -22,6 +22,7 @@ void Connection::receiveMessage(char * recvbuf)
         printf("Connection closed\n");
     else
         printf("recv failed with error: %d\n", WSAGetLastError());
+    return m_iResult;
 }
 
 void Connection::readMessage()

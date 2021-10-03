@@ -8,28 +8,23 @@
 #include "Connection.h"
 #include "Terminal.h"
 #include <string>
+#include <chrono>
 
 int main() {
 
 	
+	char* port = NULL;	//Je suis obligé de passer par cette variable pour utiliser make_unique, sinon ça gueulait
+	char* addr = "localhost";	//idem
 
 	//On créer dans un premier temps un objet de type serveur, et on lance dans un nouveau thread l'attente de connexion.
-	Server my_server = Server(NULL);
-	std::thread th_server(&Server::Update, &my_server);
+	std::shared_ptr<Server> my_server = std::make_shared<Server>(port);
 	
 	//On créer un nouvel objet de type client, qui va juste envoyer un message au serveur
-	Client my_client1 = Client("localhost", NULL);
-	Client my_client2 = Client("localhost", NULL);
-	std::thread th_client1(&Client::Update, &my_client1);
-	std::thread th_client2(&Client::Update, &my_client2);
-	my_client1.sendMessage("Hello World");
+	std::shared_ptr<Client> my_client1 = std::make_shared<Client>(addr, port);
+	std::shared_ptr<Client> my_client2 = std::make_shared<Client>(addr, port);
+
+	my_client1->sendMessage("Hello World");
 	
-	th_client1.join();
-	th_client2.join();
-	th_server.join();
-
-	std::cout << "server and client stopped.\n";
-
 	return 0;
 
 }

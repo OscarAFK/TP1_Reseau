@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "Connection.h"
+#include <thread>
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
@@ -26,11 +27,12 @@ class Client {
 		int Update();
 		void readSocket();
 		void sendMessage(char* message);
-		
+		void Quit();
 
 
 
 	private:
-
+		bool quit;
 		Connection* m_connection;
+		std::thread m_threadNetwork;
 };

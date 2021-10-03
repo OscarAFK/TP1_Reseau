@@ -31,6 +31,7 @@ protected :
 public:
 	int getSocket();
 
+	virtual void Update();
 	Network(char * addr, char * port);
 	Network(int socket);
 	Network()= default;

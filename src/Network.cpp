@@ -7,6 +7,10 @@ int Network::getSocket()
     return m_ConnectSocket;
 }
 
+void Network::Update()
+{
+}
+
 Network::Network(char* addr, char* port)
 {
     // Initialize Winsock

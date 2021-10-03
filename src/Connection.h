@@ -21,7 +21,7 @@ class Connection : public Network {
 
 public:
 	void sendMessage(char * message);
-	void receiveMessage(char * recvbuf);
+	int receiveMessage(char * recvbuf);
 	void readMessage();
 
 	Connection(char * addr, char * port);

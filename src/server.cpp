@@ -1,13 +1,14 @@
 #include "server.h"
 
-Server::Server(char* port)
+Server::Server(char* port) : quit(false)
 {
-    
     m_terminal = new Terminal(NULL, port);
+    m_threadNetwork = std::thread(&Server::Update, this);
 }
 
 Server::~Server()
 {
+    m_threadNetwork.join();
     printf("Closing server\n");
 }
 
@@ -34,8 +35,8 @@ void Server::readSockets()
 
         for (std::vector<Connection*>::iterator it = m_connectionsClients.begin(); it != m_connectionsClients.end(); it++) {
             if (FD_ISSET((*it)->getSocket(), &readingSet)) {
-                (*it)->receiveMessage(recvBuffer);
-                printf("Message recu par le serveur: %s\n", recvBuffer);
+                int i_Result = (*it)->receiveMessage(recvBuffer);
+                if(i_Result>0) printf("Message recu par le serveur: %s\n", recvBuffer);
             }
         }
     }
@@ -43,8 +44,13 @@ void Server::readSockets()
 
 int Server::Update()
 {
-    while (TRUE) {
+    while (!quit) {
         readSockets();
     }
     return 0;
+}
+
+void Server::Quit()
+{
+    quit = true;
 }

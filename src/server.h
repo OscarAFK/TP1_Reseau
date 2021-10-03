@@ -9,6 +9,7 @@
 #include "Connection.h"
 #include "Terminal.h"
 #include "Network.h"
+#include <thread>
 
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
@@ -24,6 +25,8 @@ private:
 
     Terminal                    *m_terminal;
     std::vector<Connection*>    m_connectionsClients;
+    std::thread m_threadNetwork;
+    bool quit;
 
 public:
 
@@ -33,5 +36,6 @@ public:
 
     void readSockets();
     int Update();
+    void Quit();
 
 };
