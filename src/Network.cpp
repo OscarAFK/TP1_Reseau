@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <stdexcept>
 
+int Network::getSocket()
+{
+    return m_ConnectSocket;
+}
+
 Network::Network(char* addr, char* port)
 {
     // Initialize Winsock

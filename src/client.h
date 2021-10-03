@@ -23,8 +23,9 @@ class Client {
 		Client(char * addr, char * port);		// constructeur
 		~Client();		// destructeur
 
-		int runClient();
+		int Update();
 		void readSocket();
+		void sendMessage(char* message);
 		
 
 

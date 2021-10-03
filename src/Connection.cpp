@@ -16,8 +16,9 @@ void Connection::receiveMessage(char * recvbuf)
 {
     m_iResult = recv(m_ConnectSocket, recvbuf, (int)strlen(recvbuf)+1, 0);
     if (m_iResult > 0)
-        /*printf("Bytes received: %d\n", m_iResult);
-    else */if (m_iResult == 0)
+        //printf("Bytes received: %d\n", m_iResult);
+        TRUE;
+    else if (m_iResult == 0)
         printf("Connection closed\n");
     else
         printf("recv failed with error: %d\n", WSAGetLastError());
@@ -26,11 +27,6 @@ void Connection::receiveMessage(char * recvbuf)
 void Connection::readMessage()
 {
     
-}
-
-int Connection::getSocket()
-{
-    return m_ConnectSocket;
 }
 
 Connection::Connection(char* addr, char* port) : Network(addr, port)

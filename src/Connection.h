@@ -17,13 +17,12 @@
 #include "Network.h"
 
 // via elle que nous envoyons et recevons nos messages
-class Connection : Network {
+class Connection : public Network {
 
 public:
 	void sendMessage(char * message);
 	void receiveMessage(char * recvbuf);
 	void readMessage();
-	int getSocket();
 
 	Connection(char * addr, char * port);
 	Connection(int socket);

@@ -12,11 +12,12 @@ Client::~Client()
 }
 
 
-int Client::runClient() {
+int Client::Update() {
     
-
+    while (TRUE) {
+        readSocket();
+    }
     //Cette partie là c'est pour tester la connection, à enlever plus tard.
-    m_connection->sendMessage("Hello World");
     return 0;
 }
 
@@ -41,3 +42,7 @@ void Client::readSocket()
     }
 }
 
+void Client::sendMessage(char* message)
+{
+    m_connection->sendMessage(message);
+}
