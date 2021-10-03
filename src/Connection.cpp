@@ -9,18 +9,23 @@ void Connection::sendMessage(char * message)
         printf("send failed with error: %d\n", WSAGetLastError());
         WSACleanup();
     }
-    printf("Bytes sent: %d\n", m_iResult);
+    //printf("Bytes sent: %d\n", m_iResult);
 }
 
 void Connection::receiveMessage(char * recvbuf)
 {
     m_iResult = recv(m_ConnectSocket, recvbuf, (int)strlen(recvbuf)+1, 0);
     if (m_iResult > 0)
-        printf("Bytes received: %d\n", m_iResult);
-    else if (m_iResult == 0)
+        /*printf("Bytes received: %d\n", m_iResult);
+    else */if (m_iResult == 0)
         printf("Connection closed\n");
     else
         printf("recv failed with error: %d\n", WSAGetLastError());
+}
+
+void Connection::readMessage()
+{
+    
 }
 
 int Connection::getSocket()
@@ -51,6 +56,8 @@ Connection::Connection(char* addr, char* port) : Network(addr, port)
         }
         break;
     }
+    u_long nonBlocking = 1;
+    ioctlsocket(m_ConnectSocket,FIONBIO,&nonBlocking);
 }
 
 Connection::Connection(int socket)

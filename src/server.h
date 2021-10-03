@@ -4,6 +4,7 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <vector>
 
 #include "Connection.h"
 #include "Terminal.h"
@@ -21,16 +22,15 @@ class Server
 private:
 
     Terminal    *my_terminal;
-    Connection  *m_connectionClient;
+    std::vector<Connection*> m_connectionsClients;
 
 public:
-
 
     Server() = default;       // Constructeur
     Server(char * port);       // Constructeur
     ~Server();      // Destructeur
 
-
+    void readSockets();
     int runServer();
 
 };

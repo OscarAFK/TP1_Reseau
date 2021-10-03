@@ -19,11 +19,10 @@
 // via elle que nous envoyons et recevons nos messages
 class Connection : Network {
 
-private :
-
 public:
 	void sendMessage(char * message);
 	void receiveMessage(char * recvbuf);
+	void readMessage();
 	int getSocket();
 
 	Connection(char * addr, char * port);

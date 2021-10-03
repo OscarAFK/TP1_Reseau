@@ -18,11 +18,15 @@ int main() {
 	std::thread th_server(&Server::runServer, &my_server);
 	
 	//On créer un nouvel objet de type client, qui va juste envoyer un message au serveur
-	Client my_client = Client("localhost", NULL);
-	my_client.runClient();
+	Client my_client1 = Client("localhost", NULL);
+	Client my_client2 = Client("localhost", NULL);
+	std::thread th_client1(&Client::runClient, &my_client1);
+	std::thread th_client2(&Client::runClient, &my_client2);
 
-	th_server.join();
 	
+	th_client1.join();
+	th_client2.join();
+	th_server.join();
 
 	std::cout << "server and client stopped.\n";
 

@@ -47,5 +47,6 @@ int Terminal::Connect()
         closesocket(m_ConnectSocket);
         WSACleanup();
     }
+    printf("Nouvelle connection!\n");
     return ConnectSocket;
 }

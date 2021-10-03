@@ -24,6 +24,7 @@ class Client {
 		~Client();		// destructeur
 
 		int runClient();
+		void readSocket();
 		
 
 
