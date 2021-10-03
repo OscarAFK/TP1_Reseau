@@ -14,22 +14,27 @@
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
 
-#include "Network.h"
 
 // via elle que nous envoyons et recevons nos messages
-class Connection : Network {
+class Network {
 
-private :
+protected :
+
+	const char* m_sendbuf = "this is a test";
+
+	int m_ConnectSocket = INVALID_SOCKET;
+	
+	int m_iResult = NULL;
+	struct addrinfo* m_result = NULL,
+		* m_ptr = NULL;
 
 public:
-	void sendMessage(char * message);
-	void receiveMessage(char * recvbuf);
 	int getSocket();
 
-	Connection(char * addr, char * port);
-	Connection(int socket);
-	Connection()= default;
-	~Connection();
+	Network(char * addr, char * port);
+	Network(int socket);
+	Network()= default;
+	~Network();
 
 
 	

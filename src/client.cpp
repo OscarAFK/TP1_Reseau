@@ -4,7 +4,6 @@
 Client::Client(char* addr, char* port)
 {
     m_connection = new Connection(addr,port);
-    m_connection->ConnectToServer();
 }
 
 Client::~Client()

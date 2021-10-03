@@ -15,20 +15,23 @@
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
 
+#include "Network.h"
+
 // permet au serveur de créer une connexion lorsqu’il reçoit une
 // demande de connexion d’un client.
-class Terminal {
+class Terminal : Network {
 
 private:
 
-	int m_ListenSocket = NULL;
+	//int m_ListenSocket = NULL;
 	int m_iResult;
 
 public :
 
-	Terminal(int listenSocket);
+	//Terminal(int listenSocket);
+	Terminal(char * addr, char * port);
 	Terminal() = default;
 	~Terminal() = default;
 
-	Connection *Connect();
+	int Connect();
 };

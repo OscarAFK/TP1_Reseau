@@ -3,9 +3,7 @@
 Server::Server(char* port)
 {
     
-    m_connectionServer = new Connection(NULL, port);
-    m_connectionServer->InitServer();
-    my_terminal = Terminal(m_connectionServer->getSocket());
+    my_terminal = new Terminal(NULL, port);
 }
 
 Server::~Server()
@@ -15,7 +13,7 @@ Server::~Server()
 
 int Server::runServer()
 {
-    m_connectionClient = my_terminal.Connect();
+    m_connectionClient = new Connection(my_terminal->Connect());
 
 
     //Cette partie là c'est pour tester la connection, à enlever plus tard.

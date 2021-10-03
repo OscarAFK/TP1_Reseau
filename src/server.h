@@ -20,8 +20,7 @@ class Server
 {
 private:
 
-    Terminal    my_terminal;
-    Connection  *m_connectionServer;
+    Terminal    *my_terminal;
     Connection  *m_connectionClient;
 
 public:
