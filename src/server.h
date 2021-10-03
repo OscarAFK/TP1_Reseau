@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "Connection.h"
+#include "Terminal.h"
 
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
@@ -19,43 +20,18 @@ class Server
 {
 private:
 
-    Connection m_connection;
+    Terminal    my_terminal;
+    Connection  *m_connectionServer;
+    Connection  *m_connectionClient;
 
-    WSADATA     m_wsaData;
-    int         m_iResult;
-
-    SOCKET      m_ListenSocket = INVALID_SOCKET;
-    SOCKET      m_ClientSocket = INVALID_SOCKET;
-
-    struct addrinfo* m_result = NULL;
-    struct addrinfo m_hints;
-
-    int         m_iSendResult;
-    char        m_recvbuf[DEFAULT_BUFLEN];
-    int         m_recvbuflen = DEFAULT_BUFLEN;
 public:
 
 
     Server() = default;       // Constructeur
-    ~Server() = default;      // Destructeur
+    Server(char * port);       // Constructeur
+    ~Server();      // Destructeur
 
 
-    void setConnection(Connection newConnection);
-	Connection getConnection();
+    int runServer();
 
-
-    int RunServer();
-
-    //---
-    int initServer();
-
-    int createSocket();
-    int bindSocket();
-    int closeSocket();
-
-    int listenClient();
-    int acceptClient();
-
-    int sendData();
-    int receiveData();
 };

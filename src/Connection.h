@@ -22,24 +22,23 @@ private :
 
 	const char* m_sendbuf = "this is a test";
 
-	int		m_recvbuflen = DEFAULT_BUFLEN;
-	char	m_recvbuf[DEFAULT_BUFLEN];
-
-	SOCKET m_ListenSocket = INVALID_SOCKET;
-	SOCKET m_ConnectSocket = INVALID_SOCKET;
-
+	int m_ConnectSocket = INVALID_SOCKET;
+	
 	int m_iResult;
-	struct addrinfo* m_result = 
-		NULL,
-		* m_ptr = NULL,
-		m_hints;
+	struct addrinfo* m_result = NULL,
+		* m_ptr = NULL;
 
 public:
-	void sendMessage();
-	void receiveMessage();
-	Connection(char* addr, char* port);
+	void sendMessage(char * message);
+	void receiveMessage(char * recvbuf);
+	void ConnectToServer();
+	void InitServer();
+	int getSocket();
+
+	Connection(char * addr, char * port);
+	Connection(int socket);
 	Connection()= default;
-	~Connection();	// mettre les close
+	~Connection();
 
 
 	

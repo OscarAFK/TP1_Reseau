@@ -2,7 +2,19 @@
 #include "Connection.h"
 
 
-Connection Terminal::createConnection()
+Terminal::Terminal(int listenSocket) : m_ListenSocket(listenSocket)
 {
-	return Connection("localhost", NULL);
+}
+
+
+Connection * Terminal::Connect()
+{
+    // Accept a client socket
+    int ConnectSocket = accept(m_ListenSocket, NULL, NULL);
+    if (ConnectSocket == INVALID_SOCKET) {
+        printf("accept failed with error: %d\n", WSAGetLastError());
+        closesocket(m_ListenSocket);
+        WSACleanup();
+    }
+    return new Connection(ConnectSocket);
 }

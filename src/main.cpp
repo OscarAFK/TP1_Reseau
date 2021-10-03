@@ -7,24 +7,22 @@
 #include "client.h"
 #include "Connection.h"
 #include "Terminal.h"
+#include <string>
 
 int main() {
 
-	Terminal my_terminal;
-
-	Client my_client;
-	Server my_server;
-
-	my_server.setConnection(my_terminal.createConnection());
-	my_client.setConnection(my_terminal.createConnection());
 	
 
-	std::thread th_server(&Server::RunServer, &my_server);
-	std::thread th_client(&Client::runClient, &my_client);
+	//On créer dans un premier temps un objet de type serveur, et on lance dans un nouveau thread l'attente de connexion.
+	Server my_server = Server(NULL);
+	std::thread th_server(&Server::runServer, &my_server);
 	
+	//On créer un nouvel objet de type client, qui va juste envoyer un message au serveur
+	Client my_client = Client("localhost", NULL);
+	my_client.runClient();
 
-	th_client.join();
 	th_server.join();
+	
 
 	std::cout << "server and client stopped.\n";
 

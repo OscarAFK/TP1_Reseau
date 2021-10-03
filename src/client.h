@@ -20,34 +20,15 @@ class Client {
 	public:
 
 		Client() = default;		// constructeur
-		~Client() = default;		// destructeur
-
-		void setConnection(Connection newConnection);
-		Connection getConnection();
+		Client(char * addr, char * port);		// constructeur
+		~Client();		// destructeur
 
 		int runClient();
-		//---
-
-		int initialisationWinsock();
-		int createSocket();
-		int connectServeur();
-		//int initBuffer();
-		int connexionShutdown();
-		int Getaddrinfo(char* addr);
 		
 
 
 
 	private:
 
-		Connection m_connection;
-		WSADATA m_wsaData;
-		SOCKET m_ConnectSocket = INVALID_SOCKET;
-		struct addrinfo* m_result = NULL,
-			* m_ptr = NULL,
-			m_hints;
-		//const char* m_sendbuf = "this is a test";
-		//char m_recvbuf[DEFAULT_BUFLEN];
-		int m_iResult;
-		//int m_recvbuflen = DEFAULT_BUFLEN;
+		Connection* m_connection;
 };
