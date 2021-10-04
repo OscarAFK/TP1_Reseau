@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
+#include <atomic>
 
 #include "Connection.h"
 #include "Terminal.h"
@@ -26,7 +27,8 @@ private:
     Terminal                    *m_terminal;
     std::vector<Connection*>    m_connectionsClients;
     std::thread m_threadNetwork;
-    bool quit;
+    //bool quit;
+    std::atomic<bool> m_quit;
 
 public:
 

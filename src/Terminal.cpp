@@ -36,6 +36,8 @@ Terminal::Terminal(char* addr, char* port) : Network(addr, port)
         WSACleanup();
         return;
     }
+    u_long nonBlocking = 1;
+    ioctlsocket(m_ConnectSocket, FIONBIO, &nonBlocking);
 }
 
 int Terminal::Connect()

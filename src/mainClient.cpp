@@ -1,14 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <thread>
 
 #include "server.h"
 #include "client.h"
-#include "Connection.h"
-#include "Terminal.h"
 #include <string>
-#include <chrono>
 
 int main() {
 

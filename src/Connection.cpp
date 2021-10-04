@@ -60,6 +60,8 @@ Connection::Connection(char* addr, char* port) : Network(addr, port)
 Connection::Connection(int socket)
 {
     m_ConnectSocket = socket;
+    u_long nonBlocking = 1;
+    ioctlsocket(m_ConnectSocket, FIONBIO, &nonBlocking);
 }
 
 Connection::~Connection()

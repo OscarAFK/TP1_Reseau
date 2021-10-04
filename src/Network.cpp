@@ -43,6 +43,8 @@ Network::Network(char* addr, char* port)
 Network::Network(int socket)
 {
     m_ConnectSocket = socket;
+    u_long nonBlocking = 1;
+    ioctlsocket(m_ConnectSocket, FIONBIO, &nonBlocking);
 }
 
 Network::~Network()
