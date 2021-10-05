@@ -4,7 +4,9 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 #include <vector>
+#include <atomic>
 
 #include "Connection.h"
 #include "Terminal.h"
@@ -26,15 +28,19 @@ private:
     Terminal                    *m_terminal;
     std::vector<Connection*>    m_connectionsClients;
     std::thread m_threadNetwork;
-    bool quit;
+    //bool quit;
+    std::atomic<bool> m_quit;
 
 public:
 
+
     Server() = default;       // Constructeur
-    Server(char * port);       // Constructeur
+    Server(std::string port);       // Constructeur
     ~Server();      // Destructeur
 
     void readSockets();
+    void broadcast(const std::string message);
+    void broadcast(const std::string message, const Connection* origin);
     int Update();
     void Quit();
 

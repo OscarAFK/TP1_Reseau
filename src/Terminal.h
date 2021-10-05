@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
@@ -29,7 +28,7 @@ private:
 public :
 
 	//Terminal(int listenSocket);
-	Terminal(char * addr, char * port);
+	Terminal(std::string addr, std::string port);
 	Terminal() = default;
 	~Terminal() = default;
 

@@ -4,6 +4,7 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 
 #include "Connection.h"
 #include <thread>
@@ -21,12 +22,13 @@ class Client {
 	public:
 
 		Client() = default;		// constructeur
-		Client(char * addr, char * port);		// constructeur
+		Client(std::string addr, std::string port);		// constructeur
 		~Client();		// destructeur
 
 		int Update();
 		void readSocket();
-		void sendMessage(char* message);
+		void sendMessage(const std::string message);
+		bool isServerUp();
 		void Quit();
 
 

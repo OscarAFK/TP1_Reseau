@@ -24,5 +24,8 @@ set(${PROJECT_NAME}_HEADERS "src/client.h"
 
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_HEADERS})
 
-add_executable( "testServer" "src/main.cpp" )
-target_link_libraries( "testServer" PUBLIC ${PROJECT_NAME} )
+add_executable( "server" "src/mainServer.cpp" )
+target_link_libraries( "server" PUBLIC ${PROJECT_NAME} )
+
+add_executable( "client" "src/mainClient.cpp" )
+target_link_libraries( "client" PUBLIC ${PROJECT_NAME} )
