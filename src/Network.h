@@ -3,6 +3,8 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string>
+#include <iostream>
 
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
@@ -20,8 +22,6 @@ class Network {
 
 protected :
 
-	const char* m_sendbuf = "this is a test";
-
 	int m_ConnectSocket = INVALID_SOCKET;
 	
 	int m_iResult = NULL;
@@ -29,10 +29,14 @@ protected :
 		* m_ptr = NULL;
 
 public:
+
+	bool verbose;
+
 	int getSocket();
+	std::string getName();
 
 	virtual void Update();
-	Network(char * addr, char * port);
+	Network(std::string addr, std::string port);
 	Network(int socket);
 	Network()= default;
 	~Network();

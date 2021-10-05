@@ -4,6 +4,7 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 #include <vector>
 #include <atomic>
 
@@ -32,11 +33,14 @@ private:
 
 public:
 
+
     Server() = default;       // Constructeur
-    Server(char * port);       // Constructeur
+    Server(std::string port);       // Constructeur
     ~Server();      // Destructeur
 
     void readSockets();
+    void broadcast(const std::string message);
+    void broadcast(const std::string message, const Connection* origin);
     int Update();
     void Quit();
 

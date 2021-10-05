@@ -1,23 +1,30 @@
 #include "Network.h"
-#include <stdio.h>
-#include <stdexcept>
 
 int Network::getSocket()
 {
     return m_ConnectSocket;
 }
 
+std::string Network::getName()
+{
+    struct sockaddr_in socketInfo = {0};
+    int namelen = sizeof(sockaddr);
+    getpeername(m_ConnectSocket, (struct sockaddr*)&socketInfo, &namelen);
+    std::string name = inet_ntoa(socketInfo.sin_addr) + socketInfo.sin_port;
+    return name;
+}
+
 void Network::Update()
 {
 }
 
-Network::Network(char* addr, char* port)
+Network::Network(std::string addr, std::string port) : verbose(true)
 {
     // Initialize Winsock
     WSADATA wsaData;
     m_iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (m_iResult != 0) {
-        printf("WSAStartup failed with error: %d \n", m_iResult);
+        if (verbose) std::cout << "WSAStartup failed with error: " << m_iResult << std::endl;
         return;
     }
 
@@ -29,18 +36,21 @@ Network::Network(char* addr, char* port)
     hints.ai_flags = AI_PASSIVE;
 
     // Resolve the Server address and port
-    if (port == NULL)
+    if (port.empty())
         port = DEFAULT_PORT;
 
-    m_iResult = getaddrinfo(addr, port, &hints, &m_result);
+    if (addr.empty())
+        addr = "localhost";
+
+    m_iResult = getaddrinfo(addr.c_str(), port.c_str(), &hints, &m_result);
     if (m_iResult != 0) {
-        printf("getaddrinfo failed with error: %d \n", m_iResult);
+        if (verbose) std::cout << "getaddrinfo failed with error: " << m_iResult << std::endl;
         WSACleanup();
         return;
     }
 }
 
-Network::Network(int socket)
+Network::Network(int socket) : verbose(false)
 {
     m_ConnectSocket = socket;
     u_long nonBlocking = 1;
@@ -51,8 +61,8 @@ Network::~Network()
 {
     if (m_ConnectSocket != INVALID_SOCKET) {
         m_iResult = shutdown(m_ConnectSocket, SD_SEND);
-        if (m_iResult == SOCKET_ERROR) {
-            printf("Connection: shutdown failed with error: %d\n", WSAGetLastError());
+        if (verbose && m_iResult == SOCKET_ERROR) {
+            std::cout << "Connection: shutdown failed with error: " << WSAGetLastError() << std::endl;
         }
     }
     closesocket(m_ConnectSocket);

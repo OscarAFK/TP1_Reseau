@@ -2,35 +2,29 @@
 #include <stdio.h>
 #include <stdexcept>
 
-void Connection::sendMessage(char * message)
+void Connection::sendMessage(const std::string message)
 {
-    m_iResult = send(m_ConnectSocket, message, (int)strlen(message)+1, 0);
+    m_iResult = send(m_ConnectSocket, message.c_str(), (int)strlen(message.c_str())+1, 0);
     if (m_iResult == SOCKET_ERROR) {
-        printf("send failed with error: %d\n", WSAGetLastError());
+        if (verbose) std::cout << "send failed with error: " << WSAGetLastError() << std::endl;
         WSACleanup();
     }
-    //printf("Bytes sent: %d\n", m_iResult);
+    if (verbose) std::cout << "Bytes sent: " << m_iResult << std::endl;
 }
 
 int Connection::receiveMessage(char * recvbuf)
 {
     m_iResult = recv(m_ConnectSocket, recvbuf, (int)strlen(recvbuf)+1, 0);
     if (m_iResult > 0)
-        //printf("Bytes received: %d\n", m_iResult);
-        TRUE;
+        if (verbose) std::cout << "Bytes received: " << m_iResult << std::endl;
     else if (m_iResult == 0)
-        printf("Connection closed\n");
+        if (verbose) std::cout << "Connection closed\n";
     else
-        printf("recv failed with error: %d\n", WSAGetLastError());
+        if (verbose) std::cout << "recv failed with error: " << WSAGetLastError() << std::endl;
     return m_iResult;
 }
 
-void Connection::readMessage()
-{
-    
-}
-
-Connection::Connection(char* addr, char* port) : Network(addr, port)
+Connection::Connection(std::string addr, std::string port) : Network(addr, port)
 {
     // Attempt to connect to an address until one succeeds
     for (m_ptr = m_result; m_ptr != NULL; m_ptr = m_ptr->ai_next) {
@@ -39,7 +33,7 @@ Connection::Connection(char* addr, char* port) : Network(addr, port)
         m_ConnectSocket = socket(m_ptr->ai_family, m_ptr->ai_socktype,
             m_ptr->ai_protocol);
         if (m_ConnectSocket == INVALID_SOCKET) {
-            printf("ConnectionToServer: socket failed with error: %d \n", m_iResult);
+            if (verbose) std::cout << "ConnectionToServer: socket failed with error: " << m_iResult << std::endl;
             WSACleanup();
             return;
         }
@@ -57,11 +51,8 @@ Connection::Connection(char* addr, char* port) : Network(addr, port)
     ioctlsocket(m_ConnectSocket,FIONBIO,&nonBlocking);
 }
 
-Connection::Connection(int socket)
+Connection::Connection(int socket) : Network(socket)
 {
-    m_ConnectSocket = socket;
-    u_long nonBlocking = 1;
-    ioctlsocket(m_ConnectSocket, FIONBIO, &nonBlocking);
 }
 
 Connection::~Connection()

@@ -20,11 +20,10 @@
 class Connection : public Network {
 
 public:
-	void sendMessage(char * message);
+	void sendMessage(const std::string message);
 	int receiveMessage(char * recvbuf);
-	void readMessage();
 
-	Connection(char * addr, char * port);
+	Connection(std::string addr, std::string port);
 	Connection(int socket);
 	Connection()= default;
 	~Connection();

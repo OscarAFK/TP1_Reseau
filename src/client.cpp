@@ -1,7 +1,7 @@
 #include "client.h"
 
 
-Client::Client(char* addr, char* port) : quit(FALSE)
+Client::Client(std::string addr, std::string port) : quit(FALSE)
 {
     m_connection = new Connection(addr,port);
     m_threadNetwork = std::thread(&Client::Update, this);
@@ -10,7 +10,7 @@ Client::Client(char* addr, char* port) : quit(FALSE)
 Client::~Client()
 {
     m_threadNetwork.join();
-    printf("Closing client\n");
+    std::cout << "Closing client\n";
 }
 
 
@@ -19,9 +19,6 @@ int Client::Update() {
     while (!quit) {
         readSocket();
     }
-    
-    //printf("Un client se deconnecte!\n");
-
     return 0;
 }
 
@@ -35,20 +32,35 @@ void Client::readSocket()
     FD_SET(m_connection->getSocket(), &readingSet);
 
     char recvBuffer[DEFAULT_BUFLEN];
+    TIMEVAL tv = { 0,0 };
 
-    int ret = select(0, &readingSet, &writingSet, nullptr, nullptr);
+    int ret = select(0, &readingSet, &writingSet, nullptr, &tv);
     if (ret > 0)
     {
         if (FD_ISSET(m_connection->getSocket(), &readingSet)) {
-            m_connection->receiveMessage(recvBuffer);
-            printf("Message recu par le client: %s\n", recvBuffer);
+            int i_Result = m_connection->receiveMessage(recvBuffer);
+            if (i_Result > 0) {
+                std::cout << "Message from server: " << recvBuffer << std::endl;
+            }
+            else {
+                if (WSAGetLastError() == 10054) {
+                    std::cout << "Server disconnected\n";
+                    m_connection = nullptr;
+                    Quit();
+                }
+            }
         }
     }
 }
 
-void Client::sendMessage(char* message)
+void Client::sendMessage(const std::string message)
 {
     m_connection->sendMessage(message);
+}
+
+bool Client::isServerUp()
+{
+    return m_connection!=nullptr;
 }
 
 void Client::Quit()
