@@ -50,7 +50,7 @@ Network::Network(std::string addr, std::string port) : verbose(true)
     }
 }
 
-Network::Network(int socket) : verbose(false)
+Network::Network(int socket) : verbose(true)
 {
     m_ConnectSocket = socket;
     u_long nonBlocking = 1;

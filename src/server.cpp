@@ -2,10 +2,10 @@
 #include "server.h"
 #include "server.h"
 
-Server::Server(std::string port) : m_quit(false)
+Server::Server(std::string port, std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect) : m_quit(false)
 {
     m_terminal = new Terminal("", port);
-    m_threadNetwork = std::thread(&Server::Update, this);
+    m_threadNetwork = std::thread(&Server::Update, this, onConnect, onRecv, onDisconnect);
 }
 
 Server::~Server()
@@ -14,12 +14,10 @@ Server::~Server()
     std::cout << "Closing server\n";
 }
 
-void Server::readSockets()
+void Server::readSockets(std::function<void(Connection*)> onConnect, std::function<void(Connection* , char *)> onRecv, std::function<void(Connection*)> onDisconnect)
 {
     fd_set readingSet;
     FD_ZERO(&readingSet);
-    fd_set writingSet;
-    FD_ZERO(&writingSet);
     
     FD_SET(m_terminal->getSocket(), &readingSet);
     for (std::vector<Connection*>::iterator it = m_connectionsClients.begin(); it != m_connectionsClients.end(); it++) {
@@ -29,23 +27,22 @@ void Server::readSockets()
     char recvBuffer[DEFAULT_BUFLEN];
     TIMEVAL tv = { 0,0 };
 
-    int ret = select(0, &readingSet, &writingSet, nullptr, &tv);
+    int ret = select(0, &readingSet, nullptr, nullptr, &tv);
     if (ret > 0) 
     {
         if (FD_ISSET(m_terminal->getSocket(), &readingSet)) {
             m_connectionsClients.push_back(new Connection(m_terminal->Connect()));
-            std::cout << "Client connecte\n";
+            onConnect(m_connectionsClients.back());
         }
         for (std::vector<Connection*>::iterator it = m_connectionsClients.begin(); it != m_connectionsClients.end();) {
             if (FD_ISSET((*it)->getSocket(), &readingSet)) {
                 int i_Result = (*it)->receiveMessage(recvBuffer);
                 if (i_Result > 0) {
-                    std::cout << "Broadcasting message: " << recvBuffer << std::endl;
-                    broadcast(recvBuffer, (*it));
+                    onRecv((*it), recvBuffer);
                 }
                 else{ 
                     if (WSAGetLastError() == 10054) {
-                        std::cout << "Client disconnected\n";
+                        onDisconnect((*it));
                         it = m_connectionsClients.erase(it);
                         continue;
                     }
@@ -70,10 +67,10 @@ void Server::broadcast(const std::string message, const Connection* origin)
     }
 }
 
-int Server::Update()
+int Server::Update(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect)
 {
     while (!m_quit) {
-        readSockets();
+        readSockets(onConnect, onRecv, onDisconnect);
     }
     return 0;
 }

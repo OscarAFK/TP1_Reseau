@@ -28,7 +28,10 @@ int main(int argc, char** argv) {
 			"===================================================================\n\n" << std::endl;
 	
 	//On créer dans un premier temps un objet de type serveur, et on lance dans un nouveau thread l'attente de connexion.
-	std::shared_ptr<Server> my_server = std::make_shared<Server>(argv[1]);
+	std::shared_ptr<Server> my_server = std::make_shared<Server>(argv[1],
+															[](Connection* c) { std::cout << "Client connected." << std::endl; },
+															[&](Connection* c, char* recvBuffer) { std::cout << "Broadcasting message: " << recvBuffer << std::endl; my_server->broadcast(recvBuffer, c); },
+															[](Connection* c) { std::cout << "Client disconnected." << std::endl; });
 
 	while(quit == false) {
 		std::getline(std::cin, input);
