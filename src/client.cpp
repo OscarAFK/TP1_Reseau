@@ -1,10 +1,13 @@
 #include "client.h"
 
 
-Client::Client(std::string addr, std::string port, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect) : quit(FALSE)
+Client::Client(std::string protocole, std::string addr, std::string port, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect) : Network(protocole)
 {
-    m_connection = new Connection(addr,port);
-    m_threadNetwork = std::thread(&Client::Update, this, onRecv, onDisconnect);
+    if(protocole=="TCP")
+        m_connections.push_back(new TCPConnection(addr, port));
+    else if(protocole=="UDP")
+        m_connections.push_back(new UDPConnection(addr, port));
+    m_threadNetwork = std::thread(&Client::Update, this, [](Connection*) { true; }, onRecv, onDisconnect);
 }
 
 Client::~Client()
@@ -13,21 +16,13 @@ Client::~Client()
     std::cout << "Closing client\n";
 }
 
-
-int Client::Update(std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect) {
-    
-    while (!quit) {
-        readSocket(onRecv, onDisconnect);
-    }
-    return 0;
-}
-
-void Client::readSocket(std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect)
+void Client::Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect)
 {
     fd_set readingSet;
     FD_ZERO(&readingSet);
 
-    FD_SET(m_connection->getSocket(), &readingSet);
+    if(!m_connections.empty())
+        FD_SET(m_connections[0]->getSocket(), &readingSet);
 
     char recvBuffer[DEFAULT_BUFLEN];
     TIMEVAL tv = { 0,0 };
@@ -35,34 +30,23 @@ void Client::readSocket(std::function<void(Connection*, char*)> onRecv, std::fun
     int ret = select(0, &readingSet, nullptr, nullptr, &tv);
     if (ret > 0)
     {
-        if (FD_ISSET(m_connection->getSocket(), &readingSet)) {
-            int i_Result = m_connection->receiveMessage(recvBuffer);
+        if (FD_ISSET(m_connections[0]->getSocket(), &readingSet)) {
+            int i_Result = m_connections[0]->receiveMessage(recvBuffer);
             if (i_Result > 0) {
-                //std::cout << "Message from server: " << recvBuffer << std::endl;
-                onRecv(m_connection, recvBuffer);
+                onRecv(m_connections[0], recvBuffer);
             }
             else {
                 if (WSAGetLastError() == 10054) {
-                    onDisconnect(m_connection);
-                    m_connection = nullptr;
+                    onDisconnect(m_connections[0]);
+                    m_connections.clear();
                     Quit();
+                    return;
                 }
             }
         }
     }
 }
-
-void Client::sendMessage(const std::string message)
-{
-    m_connection->sendMessage(message);
-}
-
 bool Client::isServerUp()
 {
-    return m_connection!=nullptr;
-}
-
-void Client::Quit()
-{
-    quit = true;
+    return !m_connections.empty();
 }

@@ -1,46 +1,38 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
 
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <string>
 #include <iostream>
+#include <vector>
+#include <atomic>
 
+#include "Connection.h"
+#include "Terminal.h"
+#include "Network.h"
+#include <thread>
+#include <functional>
 
-// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
-#pragma comment (lib, "Ws2_32.lib")
-#pragma comment (lib, "Mswsock.lib")
-#pragma comment (lib, "AdvApi32.lib")
+class Network
+{
+protected:
 
-
-#define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
-
-
-// via elle que nous envoyons et recevons nos messages
-class Network {
-
-protected :
-
-	int m_ConnectSocket = INVALID_SOCKET;
-	
-	int m_iResult = NULL;
-	struct addrinfo* m_result = NULL,
-		* m_ptr = NULL;
+    Terminal* m_terminal;
+    std::vector<Connection*>    m_connections;
+    std::thread m_threadNetwork;
+    std::atomic<bool> m_quit;
+    std::string m_protocole;
 
 public:
 
-	bool verbose;
+    Network(std::string protocole);       // Constructeur
+    ~Network();      // Destructeur
 
-	int getSocket();
-	std::string getName();
+    virtual void Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect)=0;
+    void broadcast(const std::string message);
+    void broadcast(const std::string message, const Connection* origin);
+    int Update(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);
+    void Quit();
 
-	virtual void Update();
-	Network(std::string addr, std::string port);
-	Network(int socket);
-	Network()= default;
-	~Network();
-
-
-	
 };

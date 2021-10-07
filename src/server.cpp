@@ -1,10 +1,8 @@
 #include "server.h"
-#include "server.h"
-#include "server.h"
 
-Server::Server(std::string port, std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect) : m_quit(false)
+Server::Server(std::string protocole, std::string port, std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect) : Network(protocole)
 {
-    m_terminal = new Terminal("", port);
+    m_terminal = new Terminal(protocole, port);
     m_threadNetwork = std::thread(&Server::Update, this, onConnect, onRecv, onDisconnect);
 }
 
@@ -14,13 +12,13 @@ Server::~Server()
     std::cout << "Closing server\n";
 }
 
-void Server::readSockets(std::function<void(Connection*)> onConnect, std::function<void(Connection* , char *)> onRecv, std::function<void(Connection*)> onDisconnect)
+void Server::Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection* , char *)> onRecv, std::function<void(Connection*)> onDisconnect)
 {
     fd_set readingSet;
     FD_ZERO(&readingSet);
     
     FD_SET(m_terminal->getSocket(), &readingSet);
-    for (std::vector<Connection*>::iterator it = m_connectionsClients.begin(); it != m_connectionsClients.end(); it++) {
+    for (std::vector<Connection*>::iterator it = m_connections.begin(); it != m_connections.end(); it++) {
         FD_SET((*it)->getSocket(), &readingSet);
     }
 
@@ -31,10 +29,13 @@ void Server::readSockets(std::function<void(Connection*)> onConnect, std::functi
     if (ret > 0) 
     {
         if (FD_ISSET(m_terminal->getSocket(), &readingSet)) {
-            m_connectionsClients.push_back(new Connection(m_terminal->Connect()));
-            onConnect(m_connectionsClients.back());
+            if (m_protocole == "TCP")
+                m_connections.push_back(new TCPConnection(m_terminal->Connect()));
+            else if (m_protocole == "UDP")
+                m_connections.push_back(new UDPConnection(m_terminal->Connect()));
+            onConnect(m_connections.back());
         }
-        for (std::vector<Connection*>::iterator it = m_connectionsClients.begin(); it != m_connectionsClients.end();) {
+        for (std::vector<Connection*>::iterator it = m_connections.begin(); it != m_connections.end();) {
             if (FD_ISSET((*it)->getSocket(), &readingSet)) {
                 int i_Result = (*it)->receiveMessage(recvBuffer);
                 if (i_Result > 0) {
@@ -43,7 +44,7 @@ void Server::readSockets(std::function<void(Connection*)> onConnect, std::functi
                 else{ 
                     if (WSAGetLastError() == 10054) {
                         onDisconnect((*it));
-                        it = m_connectionsClients.erase(it);
+                        it = m_connections.erase(it);
                         continue;
                     }
                 }
@@ -51,32 +52,4 @@ void Server::readSockets(std::function<void(Connection*)> onConnect, std::functi
             ++it;
         }
     }
-}
-
-void Server::broadcast(const std::string message)
-{
-    for (std::vector<Connection*>::iterator it = m_connectionsClients.begin(); it != m_connectionsClients.end(); it++) {
-        (*it)->sendMessage(message);
-    }
-}
-
-void Server::broadcast(const std::string message, const Connection* origin)
-{
-    for (std::vector<Connection*>::iterator it = m_connectionsClients.begin(); it != m_connectionsClients.end(); it++) {
-        if((*it)!= origin) (*it)->sendMessage(message);
-    }
-}
-
-int Server::Update(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect)
-{
-    while (!m_quit) {
-        readSockets(onConnect, onRecv, onDisconnect);
-    }
-    return 0;
-}
-
-void Server::Quit()
-{
-    m_quit = true;
-    
 }

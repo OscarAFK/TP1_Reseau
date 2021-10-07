@@ -10,7 +10,10 @@ set(${PROJECT_NAME}_SRC
                         "src/server.cpp"
 						"src/Terminal.cpp"
 						"src/Connection.cpp"
+						"src/UDPConnection.cpp"
+						"src/TCPConnection.cpp"
 						"src/Network.cpp"
+						"src/SocketManager.cpp"
 						)
 
 set(${PROJECT_NAME}_HEADERS "src/client.h"
@@ -20,6 +23,7 @@ set(${PROJECT_NAME}_HEADERS "src/client.h"
 							"src/UDPConnection.h"
 							"src/TCPConnection.h"
 							"src/Network.h"
+							"src/SocketManager.h"
 							"src/MotherClass.h")
 
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_HEADERS})

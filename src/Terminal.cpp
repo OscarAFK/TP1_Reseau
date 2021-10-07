@@ -7,7 +7,7 @@ Terminal::Terminal(int listenSocket) : m_ListenSocket(listenSocket)
 }*/
 
 
-Terminal::Terminal(std::string addr, std::string port) : Network(addr, port)
+Terminal::Terminal(std::string protocole, std::string port) : SocketManager(protocole, "", port)
 {
     // Create a SOCKET for connecting to server
     m_ConnectSocket = socket(m_result->ai_family, m_result->ai_socktype, m_result->ai_protocol);
