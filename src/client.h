@@ -1,10 +1,4 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-
-#include <ws2tcpip.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
 
 #include "TCPConnection.h"
 #include "UDPConnection.h"
@@ -12,8 +6,9 @@
 #include <functional>
 #include "Network.h"
 
+namespace uqac {
 
-class Client : public Network {
+	class Client : public Network {
 	public:
 
 		Client() = default;		// constructeur
@@ -22,4 +17,6 @@ class Client : public Network {
 
 		void Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);
 		bool isServerUp();
-};
+	};
+
+}

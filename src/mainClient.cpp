@@ -14,9 +14,9 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
-	std::shared_ptr<Client> my_client = std::make_shared<Client>("TCP", argv[1], argv[2],
-		[&](Connection* c, char* recvBuffer) { std::cout << "Received message: " << recvBuffer << std::endl; },
-		[](Connection* c) { std::cout << "Server disconnected." << std::endl; });
+	std::shared_ptr<uqac::Client> my_client = std::make_shared<uqac::Client>("TCP", argv[1], argv[2],
+		[&](uqac::Connection* c, char* recvBuffer) { std::cout << "Received message: " << recvBuffer << std::endl; },
+		[](uqac::Connection* c) { std::cout << "Server disconnected." << std::endl; });
 
 	std::string input = "";
 	bool quit = false;

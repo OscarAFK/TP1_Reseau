@@ -1,25 +1,25 @@
 #pragma once
 #include "Connection.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-
-
 #include "SocketManager.h"
 
-// permet au serveur de créer une connexion lorsqu’il reçoit une
-// demande de connexion d’un client.
-class Terminal : public SocketManager {
+namespace uqac {
 
-private:
+	// permet au serveur de créer une connexion lorsqu’il reçoit une
+	// demande de connexion d’un client.
+	class Terminal : public SocketManager {
 
-	int m_iResult;
+	private:
 
-public :
+		int m_iResult;
 
-	Terminal(std::string protocole, std::string port);
-	Terminal() = default;
-	~Terminal() = default;
+	public:
 
-	int Connect();
-};
+		Terminal(std::string protocole, std::string port);
+		Terminal() = default;
+		~Terminal() = default;
+
+		int Connect();
+	};
+
+}

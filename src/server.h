@@ -1,12 +1,4 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-
-#include <ws2tcpip.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-#include <vector>
-#include <atomic>
 
 #include "UDPConnection.h"
 #include "TCPConnection.h"
@@ -15,16 +7,20 @@
 #include <thread>
 #include <functional>
 
-class Server : public Network {
+namespace uqac {
 
-public:
+    class Server : public Network {
+
+    public:
 
 
-    Server() = default;       // Constructeur
-    Server(std::string protocole, std::string port, std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);       // Constructeur
-    ~Server();      // Destructeur
+        Server() = default;       // Constructeur
+        Server(std::string protocole, std::string port, std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);       // Constructeur
+        ~Server();      // Destructeur
 
-    void Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char *)> onRecv, std::function<void(Connection*)> onDisconnect);
-    
+        void Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);
 
-};
+
+    };
+
+}

@@ -14,25 +14,29 @@
 #include <thread>
 #include <functional>
 
-class Network
-{
-protected:
+namespace uqac {
 
-    Terminal* m_terminal;
-    std::vector<Connection*>    m_connections;
-    std::thread m_threadNetwork;
-    std::atomic<bool> m_quit;
-    std::string m_protocole;
+    class Network
+    {
+    protected:
 
-public:
+        Terminal* m_terminal;
+        std::vector<Connection*>    m_connections;
+        std::thread m_threadNetwork;
+        std::atomic<bool> m_quit;
+        std::string m_protocole;
 
-    Network(std::string protocole);       // Constructeur
-    ~Network();      // Destructeur
+    public:
 
-    virtual void Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect)=0;
-    void broadcast(const std::string message);
-    void broadcast(const std::string message, const Connection* origin);
-    int Update(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);
-    void Quit();
+        Network(std::string protocole);       // Constructeur
+        ~Network();      // Destructeur
 
-};
+        virtual void Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect) = 0;
+        void broadcast(const std::string message);
+        void broadcast(const std::string message, const Connection* origin);
+        int Update(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);
+        void Quit();
+
+    };
+
+}

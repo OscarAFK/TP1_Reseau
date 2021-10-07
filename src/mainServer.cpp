@@ -15,10 +15,10 @@ int main(int argc, char** argv) {
 	}
 
 	//On créer dans un premier temps un objet de type serveur, et on lance dans un nouveau thread l'attente de connexion.
-	std::shared_ptr<Server> my_server = std::make_shared<Server>("TCP", argv[1],
-		[](Connection* c) { std::cout << "Client connected." << std::endl; },
-		[&](Connection* c, char* recvBuffer) { std::cout << "Broadcasting message: " << recvBuffer << std::endl; my_server->broadcast(recvBuffer, c); },
-		[](Connection* c) { std::cout << "Client disconnected." << std::endl; });
+	std::shared_ptr<uqac::Server> my_server = std::make_shared<uqac::Server>("TCP", argv[1],
+		[](uqac::Connection* c) { std::cout << "Client connected." << std::endl; },
+		[&](uqac::Connection* c, char* recvBuffer) { std::cout << "Broadcasting message: " << recvBuffer << std::endl; my_server->broadcast(recvBuffer, c); },
+		[](uqac::Connection* c) { std::cout << "Client disconnected." << std::endl; });
 
 
 

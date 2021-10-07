@@ -16,34 +16,33 @@
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
 
+namespace uqac {
 
-// via elle que nous envoyons et recevons nos messages
-class SocketManager {
+	// via elle que nous envoyons et recevons nos messages
+	class SocketManager {
 
-protected :
+	protected:
 
-	int m_ConnectSocket = INVALID_SOCKET;
-	
-	int m_iResult = NULL;
-	struct addrinfo* m_result = NULL,
-		* m_ptr = NULL;
-	struct addrinfo m_hints;
-	std::string m_addr, m_port;
+		int m_ConnectSocket = INVALID_SOCKET;
 
-public:
+		int m_iResult = NULL;
+		struct addrinfo* m_result = NULL,
+			* m_ptr = NULL;
+		struct addrinfo m_hints;
+		std::string m_addr, m_port;
 
-	bool verbose;
+	public:
 
-	int getSocket();
-	void getName(char * buffAddr, char * buffPort);
-	
+		bool verbose;
 
-	virtual void Update();
-	SocketManager(std::string protocole, std::string addr, std::string port);
-	SocketManager(int socket);
-	SocketManager()= default;
-	~SocketManager();
+		int getSocket();
+		void getName(char* buffAddr, char* buffPort);
 
 
-	
-};
+		virtual void Update();
+		SocketManager(std::string protocole, std::string addr, std::string port);
+		SocketManager(int socket);
+		~SocketManager();
+	};
+
+}
