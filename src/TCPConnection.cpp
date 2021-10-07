@@ -54,3 +54,8 @@ int TCPConnection::receiveMessage(char* recvbuf)
         if (verbose) std::cout << "recv failed with error: " << WSAGetLastError() << std::endl;
     return m_iResult;
 }
+
+int TCPConnection::receiveMessage(char* recvbuf, sockaddr_in* addrBuff)
+{
+    return 0;
+}

@@ -23,8 +23,7 @@ set(${PROJECT_NAME}_HEADERS "src/client.h"
 							"src/UDPConnection.h"
 							"src/TCPConnection.h"
 							"src/Network.h"
-							"src/SocketManager.h"
-							"src/MotherClass.h")
+							"src/SocketManager.h")
 
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_HEADERS})
 

@@ -3,6 +3,9 @@
 Server::Server(std::string protocole, std::string port, std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect) : Network(protocole)
 {
     m_terminal = new Terminal(protocole, port);
+    if (protocole == "UDP") {
+        m_connections.push_back(new TCPConnection(m_terminal->getSocket()));
+    }
     m_threadNetwork = std::thread(&Server::Update, this, onConnect, onRecv, onDisconnect);
 }
 
@@ -28,28 +31,27 @@ void Server::Listen(std::function<void(Connection*)> onConnect, std::function<vo
     int ret = select(0, &readingSet, nullptr, nullptr, &tv);
     if (ret > 0) 
     {
-        if (FD_ISSET(m_terminal->getSocket(), &readingSet)) {
-            if (m_protocole == "TCP")
+        if (m_protocole == "TCP") {
+            if (FD_ISSET(m_terminal->getSocket(), &readingSet)) {
                 m_connections.push_back(new TCPConnection(m_terminal->Connect()));
-            else if (m_protocole == "UDP")
-                m_connections.push_back(new UDPConnection(m_terminal->Connect()));
-            onConnect(m_connections.back());
-        }
-        for (std::vector<Connection*>::iterator it = m_connections.begin(); it != m_connections.end();) {
-            if (FD_ISSET((*it)->getSocket(), &readingSet)) {
-                int i_Result = (*it)->receiveMessage(recvBuffer);
-                if (i_Result > 0) {
-                    onRecv((*it), recvBuffer);
-                }
-                else{ 
-                    if (WSAGetLastError() == 10054) {
-                        onDisconnect((*it));
-                        it = m_connections.erase(it);
-                        continue;
+                onConnect(m_connections.back());
+            }
+            for (std::vector<Connection*>::iterator it = m_connections.begin(); it != m_connections.end();) {
+                if (FD_ISSET((*it)->getSocket(), &readingSet)) {
+                    int i_Result = (*it)->receiveMessage(recvBuffer);
+                    if (i_Result > 0) {
+                        onRecv((*it), recvBuffer);
+                    }
+                    else {
+                        if (WSAGetLastError() == 10054) {
+                            onDisconnect((*it));
+                            it = m_connections.erase(it);
+                            continue;
+                        }
                     }
                 }
+                ++it;
             }
-            ++it;
         }
     }
 }

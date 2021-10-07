@@ -8,5 +8,6 @@ public:
 	~UDPConnection() = default;
 
 	void sendMessage(const std::string message);
-	int receiveMessage(char* recvbuf);
+	virtual int receiveMessage(char* recvbuf);
+	int receiveMessage(char* recvbuf, struct sockaddr_in* addrBuff);
 };

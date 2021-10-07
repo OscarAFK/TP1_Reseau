@@ -28,14 +28,16 @@ Terminal::Terminal(std::string protocole, std::string port) : SocketManager(prot
         return;
     }
     freeaddrinfo(m_result);
-
-    m_iResult = listen(m_ConnectSocket, SOMAXCONN);
-    if (m_iResult == SOCKET_ERROR) {
-        if (verbose) std::cout << "listen failed with error: " << WSAGetLastError() << std::endl;
-        closesocket(m_ConnectSocket);
-        WSACleanup();
-        return;
+    if (protocole == "TCP") {
+        m_iResult = listen(m_ConnectSocket, SOMAXCONN);
+        if (m_iResult == SOCKET_ERROR) {
+            if (verbose) std::cout << "listen failed with error: " << WSAGetLastError() << std::endl;
+            closesocket(m_ConnectSocket);
+            WSACleanup();
+            return;
+        }
     }
+    
     u_long nonBlocking = 1;
     ioctlsocket(m_ConnectSocket, FIONBIO, &nonBlocking);
 }

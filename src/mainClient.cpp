@@ -9,15 +9,12 @@
 int main(int argc, char** argv) {
 
 	// Validate the parameters
-	if (argc != 4) {
-		std::cout << "usage: "<< argv[0] <<" protocol adresse port" << std::endl;
+	if (argc != 3) {
+		std::cout << "usage: "<< argv[0] <<" adresse port" << std::endl;
 		return 1;
 	}
 
-	std::string tmpProtocole = argv[1];
-	for (auto& c : tmpProtocole) c = toupper(c);
-
-	std::shared_ptr<Client> my_client = std::make_shared<Client>(tmpProtocole, argv[2], argv[3],
+	std::shared_ptr<Client> my_client = std::make_shared<Client>("TCP", argv[1], argv[2],
 		[&](Connection* c, char* recvBuffer) { std::cout << "Received message: " << recvBuffer << std::endl; },
 		[](Connection* c) { std::cout << "Server disconnected." << std::endl; });
 

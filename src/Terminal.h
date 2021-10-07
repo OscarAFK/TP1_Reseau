@@ -13,12 +13,10 @@ class Terminal : public SocketManager {
 
 private:
 
-	//int m_ListenSocket = NULL;
 	int m_iResult;
 
 public :
 
-	//Terminal(int listenSocket);
 	Terminal(std::string protocole, std::string port);
 	Terminal() = default;
 	~Terminal() = default;

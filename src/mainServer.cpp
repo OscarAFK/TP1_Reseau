@@ -9,16 +9,13 @@
 int main(int argc, char** argv) {
 
 	// Validate the parameters
-	if (argc != 3) {
-		std::cout << "usage: " << argv[0] << " protocol port" << std::endl;
+	if (argc != 2) {
+		std::cout << "usage: " << argv[0] << " port" << std::endl;
 		return 1;
 	}
 
-	std::string tmpProtocole = argv[1];
-	for (auto& c : tmpProtocole) c = toupper(c);
-
 	//On créer dans un premier temps un objet de type serveur, et on lance dans un nouveau thread l'attente de connexion.
-	std::shared_ptr<Server> my_server = std::make_shared<Server>(tmpProtocole, argv[2],
+	std::shared_ptr<Server> my_server = std::make_shared<Server>("TCP", argv[1],
 		[](Connection* c) { std::cout << "Client connected." << std::endl; },
 		[&](Connection* c, char* recvBuffer) { std::cout << "Broadcasting message: " << recvBuffer << std::endl; my_server->broadcast(recvBuffer, c); },
 		[](Connection* c) { std::cout << "Client disconnected." << std::endl; });

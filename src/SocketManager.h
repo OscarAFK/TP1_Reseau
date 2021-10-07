@@ -35,7 +35,8 @@ public:
 	bool verbose;
 
 	int getSocket();
-	std::string getName();
+	void getName(char * buffAddr, char * buffPort);
+	
 
 	virtual void Update();
 	SocketManager(std::string protocole, std::string addr, std::string port);

@@ -31,8 +31,13 @@ void UDPConnection::sendMessage(const std::string message)
 
 int UDPConnection::receiveMessage(char* recvbuf)
 {
-    int len = sizeof(m_result);
-    m_iResult = recvfrom(m_ConnectSocket, recvbuf, (int)strlen(recvbuf) + 1, 0, (struct sockaddr*)&m_result, &len);
+    return 0;
+}
+
+int UDPConnection::receiveMessage(char* recvbuf, struct sockaddr_in* addrBuff)
+{
+    int len = sizeof(addrBuff);
+    m_iResult = recvfrom(m_ConnectSocket, recvbuf, (int)strlen(recvbuf) + 1, 0, (sockaddr*)addrBuff, &len);
     if (m_iResult == SOCKET_ERROR)
     {
         if (verbose) std::cout << "recvfrom failed with error: " << WSAGetLastError() << std::endl;

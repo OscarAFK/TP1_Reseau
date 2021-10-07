@@ -1,6 +1,6 @@
 #include "SocketManager.h"
 
-SocketManager::SocketManager(std::string protocole, std::string addr, std::string port) : verbose(false), m_addr(addr), m_port(port)
+SocketManager::SocketManager(std::string protocole, std::string addr, std::string port) : verbose(true), m_addr(addr), m_port(port)
 {
     // Initialize Winsock
     WSADATA wsaData;
@@ -45,7 +45,7 @@ SocketManager::SocketManager(std::string protocole, std::string addr, std::strin
     }
 }
 
-SocketManager::SocketManager(int socket) : verbose(false)
+SocketManager::SocketManager(int socket) : verbose(true)
 {
     m_ConnectSocket = socket;
     u_long nonBlocking = 1;
@@ -70,14 +70,15 @@ int SocketManager::getSocket()
     return m_ConnectSocket;
 }
 
-std::string SocketManager::getName()
+void SocketManager::getName(char* buffAddr, char* buffPort)
 {
-    struct sockaddr_in socketInfo = { 0 };
-    int namelen = sizeof(sockaddr);
-    getpeername(m_ConnectSocket, (struct sockaddr*)&socketInfo, &namelen);
-    std::string name = inet_ntoa(socketInfo.sin_addr) + socketInfo.sin_port;
-    return name;
+    struct sockaddr_in _buffAddr;
+    int* namelen;
+    getsockname(m_ConnectSocket, (struct sockaddr*)&_buffAddr, namelen);
+    buffAddr = inet_ntoa(_buffAddr.sin_addr);
+    buffPort =(char *)std::to_string(_buffAddr.sin_port).c_str();
 }
+
 
 void SocketManager::Update()
 {

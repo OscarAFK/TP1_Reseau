@@ -9,5 +9,6 @@ public:
 
 	void sendMessage(const std::string message);
 	int receiveMessage(char* recvbuf);
+	int receiveMessage(char* recvbuf, struct sockaddr_in* addrBuff);
 };
 

@@ -11,6 +11,7 @@ class Connection : public SocketManager {
 public:
 	virtual void sendMessage(const std::string message)=0;
 	virtual int receiveMessage(char * recvbuf)=0;
+	virtual int receiveMessage(char * recvbuf, struct sockaddr_in* addrBuff)=0;
 
 	Connection(std::string protocol, std::string addr, std::string port);
 	Connection(int socket);
