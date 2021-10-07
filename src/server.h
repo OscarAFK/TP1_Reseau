@@ -1,49 +1,26 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
 
-#include <windows.h>
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "UDPConnection.h"
+#include "TCPConnection.h"
+#include "Terminal.h"
+#include "Network.h"
+#include <thread>
+#include <functional>
 
-// Need to link with Ws2_32.lib
-#pragma comment (lib, "Ws2_32.lib")
-// #pragma comment (lib, "Mswsock.lib")
+namespace uqac {
 
-#define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
+    class Server : public Network {
+
+    public:
 
 
-class server
-{
-private:
-    WSADATA     m_wsaData;
-    int         m_iResult;
+        Server() = default;       // Constructeur
+        Server(std::string protocole, std::string port, std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);       // Constructeur
+        ~Server();      // Destructeur
 
-    SOCKET      m_ListenSocket = INVALID_SOCKET;
-    SOCKET      m_ClientSocket = INVALID_SOCKET;
+        void Listen(std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect);
 
-    struct addrinfo* m_result = NULL;
-    struct addrinfo m_hints;
 
-    int         m_iSendResult;
-    char        m_recvbuf[DEFAULT_BUFLEN];
-    int         m_recvbuflen = DEFAULT_BUFLEN;
-public:
+    };
 
-    int initServer();
-
-    int createSocket();
-    int bindSocket();
-    int closeSocket();
-
-    int listenClient();
-    int acceptClient();
-
-    int sendData();
-    int receiveData();
-
-    server(/* args */) = default;
-    ~server() = default;
-};
+}
