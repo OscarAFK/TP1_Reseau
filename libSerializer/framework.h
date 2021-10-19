@@ -26,10 +26,23 @@ void SwaptEndian(T& val) {
 	val = dst.val;
 }
 
-struct Quaterion {
+struct Quaternion {
 	float x, y, z, w;
+
+	Quaternion(float _x, float _y, float _z, float _w) {
+		x = _x;
+		y = _y;
+		z = _z;
+		w = _w;
+	}
 };
 
 struct Vector3 {
 	float x, y, z;
+
+	Vector3(float _x, float _y, float _z) {
+		x = _x;
+		y = _y;
+		z = _z;
+	}
 };
