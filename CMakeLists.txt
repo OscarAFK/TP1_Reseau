@@ -35,10 +35,12 @@ add_library(${PROJECT_NAME}_libSocket STATIC ${${PROJECT_NAME}_libSocket_SRC} ${
 ##########La lib du TP2
 set(${PROJECT_NAME}_libSerializer_SRC 
                         "libSerializer/framework.cpp"
+                        "libSerializer/Serializer.cpp"
 						)
 
 set(${PROJECT_NAME}_libSerializer_HEADERS
 						"libSerializer/framework.h"
+						"libSerializer/Serializer.h"
 						)
 
 add_library(${PROJECT_NAME}_libSerializer STATIC ${${PROJECT_NAME}_libSerializer_SRC} ${${PROJECT_NAME}_libSerializer_HEADERS})
