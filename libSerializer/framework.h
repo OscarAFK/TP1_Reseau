@@ -1,7 +1,5 @@
 #include <cstdint>
 
-
-
 enum class PlateformEndianess {
 	BigEndian,
 	LittleEndian
@@ -27,3 +25,11 @@ void SwaptEndian(T& val) {
 	std::reverse_copy(src.raw.begin(), src.raw.end(),dst.raw.begin());
 	val = dst.val;
 }
+
+struct Quaterion {
+	float x, y, z, w;
+};
+
+struct Vector3 {
+	float x, y, z;
+};
