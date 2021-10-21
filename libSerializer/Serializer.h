@@ -1,27 +1,30 @@
+#include <vector>
 
 class Serializer 
 {
 public:
 	Serializer();
 	Serializer(int size);
-	~Serializer();
+	~Serializer() = default;
 
-	template <typename T>
+	template <typename T, std::enable_if_t<std::is_arithmetic_v<std::remove_reference_t<T>>>* = nullptr>
 	void Serialize(T& val) {
-		
-		OutputStream stream;
-		val.Write(stream);
+		unsigned sizeOfVal = sizeof(val) / sizeof(T);
 
-		m_container = reinterpret_cast<char*>(stream.Data().data());
-		m_sizeContainer = stream.Data().size_bytes();
+		m_container.resize(m_container.size() + sizeOfVal );
+		
+		memcpy(m_container.data() + m_posContainer, &val, sizeOfVal * sizeof(T));
+		m_posContainer += sizeOfVal;
+
 	}
 
+
 	//getter
-	const char * getContainer();
-	const int getSizeContainer();
+	const std::vector<char> getContainer();
 
 private:
 
-	char* m_container;
-	int m_sizeContainer;
+
+	std::vector<char> m_container;
+	int m_posContainer;
 };
