@@ -1,25 +1,15 @@
 #include "Serializer.h"
 
-Serializer::Serializer()
+Serializer::Serializer() : m_posContainer(0)
 {
 }
 
-Serializer::Serializer(int size) : m_sizeContainer(size)
+Serializer::Serializer(int size) : m_posContainer(0)
 {
-	m_container = new char[size];
+	m_container = std::vector<char>(size);
 }
 
-Serializer::~Serializer()
-{
-	delete m_container;
-}
-
-const char* Serializer::getContainer()
+const std::vector<char> Serializer::getContainer()
 {
 	return m_container;
-}
-
-const int Serializer::getSizeContainer()
-{
-	return m_sizeContainer;
 }

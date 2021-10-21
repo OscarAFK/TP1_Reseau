@@ -2,13 +2,14 @@
 #include <algorithm>
 #include <iostream>
 
-
 class Player {
 public:
 
 	Player(Vector3 position, Vector3 taille, Quaternion rotation, int vie, int armure, float argent, char nom[128]);
 
 	void Print();
+	void Write();
+	void Read();
 
 private:
 	Vector3 m_position;
