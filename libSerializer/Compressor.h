@@ -14,9 +14,17 @@
  */
 #include <iostream>
 #include <bitset>
+#include "framework.h"
 
+struct Vector3_16 {
+	uint16_t x, y, z;
 
-
+	Vector3_16(uint16_t _x, uint16_t _y, uint16_t _z) {
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+};
 
 class Compressor
 {
@@ -33,6 +41,10 @@ public :
 
 	uint16_t compressInt(int value, int minInt, int maxInt);
 	int decompressInt(uint16_t value, int minInt, int maxInt);
+
+	Vector3_16 compressVector3(Vector3 vector, float minFloat, float maxFloat, int precision);
+	Vector3 decompressVector3(Vector3_16 vector, float minFloat, float maxFloat, int precision);
+
 
 };
 

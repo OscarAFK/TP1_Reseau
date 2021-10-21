@@ -64,8 +64,6 @@ float Compressor::decompressFloat(uint16_t value, float minFloat, float maxFloat
 
 
 //---------------------Int----------------------------
-
-
 uint16_t Compressor::compressInt(int value, int minInt, int maxInt)
 {
 	std::cout << "Start int Compression" << std::endl;
@@ -104,4 +102,27 @@ int Compressor::decompressInt(uint16_t value, int minInt, int maxInt)
 	std::cout << "\n\n";
 
 	return decomp;
+}
+
+
+//--------------------- Vector3 ----------------------------
+Vector3_16 Compressor::compressVector3(Vector3 vector, float minFloat, float maxFloat, int precision)
+{
+	std::cout << "---- Start Vector Compression ---- " << std::endl;
+
+	return Vector3_16(
+		compressFloat(vector.x, minFloat, maxFloat, precision),
+		compressFloat(vector.y, minFloat, maxFloat, precision),
+		compressFloat(vector.z, minFloat, maxFloat, precision)
+		);
+}
+
+Vector3 Compressor::decompressVector3(Vector3_16 vector, float minFloat, float maxFloat, int precision)
+{
+	std::cout << "---- Start Vector DeCompression ---- " << std::endl;
+	return Vector3(
+		decompressFloat(vector.x, minFloat, maxFloat, precision),
+		decompressFloat(vector.y, minFloat, maxFloat, precision),
+		decompressFloat(vector.z, minFloat, maxFloat, precision)
+	);
 }
