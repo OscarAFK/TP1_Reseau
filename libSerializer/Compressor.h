@@ -20,13 +20,15 @@
 
 class Compressor
 {
+private :
+
+	float getRange(float min, float max);
 
 public : 
 
-	void showFloatToBinary(float f);
 
-	uint16_t compressFloat(float value);
-	float decompressFloat(uint16_t value);
+	uint16_t compressFloat(float value, float minFloat, float maxFloat, int precision);
+	float decompressFloat(uint16_t value, float minFloat, float maxFloat, int precision);
 
 
 	uint16_t compressInt(int value, int minInt, int maxInt);

@@ -36,11 +36,13 @@ add_library(${PROJECT_NAME}_libSocket STATIC ${${PROJECT_NAME}_libSocket_SRC} ${
 set(${PROJECT_NAME}_libSerializer_SRC 
                         "libSerializer/framework.cpp"
                         "libSerializer/Serializer.cpp"
+                        "libSerializer/Compressor.cpp"                        
 						)
 
 set(${PROJECT_NAME}_libSerializer_HEADERS
 						"libSerializer/framework.h"
 						"libSerializer/Serializer.h"
+						"libSerializer/Compressor.h"
 						)
 
 add_library(${PROJECT_NAME}_libSerializer STATIC ${${PROJECT_NAME}_libSerializer_SRC} ${${PROJECT_NAME}_libSerializer_HEADERS})
@@ -55,5 +57,6 @@ target_link_libraries( "server" PUBLIC ${PROJECT_NAME}_libSocket )
 add_executable( "client" "libSocket/mainClient.cpp" )
 target_link_libraries( "client" PUBLIC ${PROJECT_NAME}_libSocket )
 
-
+add_executable( "compressor" "libSerializer/mainCompressor.cpp" )
+target_link_libraries( "compressor" PUBLIC ${PROJECT_NAME}_libSerializer )
 
