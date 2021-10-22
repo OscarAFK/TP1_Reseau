@@ -1,4 +1,6 @@
+#pragma once
 #include <vector>
+#include <iostream>
 
 class Serializer 
 {
@@ -9,18 +11,21 @@ public:
 
 	template <typename T, std::enable_if_t<std::is_arithmetic_v<std::remove_reference_t<T>>>* = nullptr>
 	void Serialize(T& val) {
-		unsigned sizeOfVal = sizeof(val) / sizeof(T);
-
-		m_container.resize(m_container.size() + sizeOfVal );
+		unsigned amount = sizeof(val)/sizeof(char);
 		
-		memcpy(m_container.data() + m_posContainer, &val, sizeOfVal * sizeof(T));
-		m_posContainer += sizeOfVal;
+		unsigned newSize = m_container.size() + amount;
+		
+		m_container.resize(newSize);
+
+		memcpy(m_container.data() + m_posContainer, &val, amount);
+		m_posContainer += amount;
 
 	}
 
+	void Serialize(char* charArray, int sizeOfArray);
 
 	//getter
-	const std::vector<char> getContainer();
+	std::vector<char>* getContainer();
 
 private:
 

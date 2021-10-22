@@ -4,17 +4,24 @@ Deserializer::Deserializer()
 {
 }
 
-Deserializer::Deserializer(char* buffer, int size)
+Deserializer::Deserializer(std::vector<char>* buffer, int size) : pos(0), m_size(size)
 {
-	m_buffer = new char[size];
+	m_buffer = buffer;
 }
 
 Deserializer::~Deserializer()
 {
-	delete m_buffer;
+	//delete m_buffer;
 }
 
-const char* Deserializer::getBuffer() {
+std::vector<char> Deserializer::Read(int sizeOfData)
+{
+	//char* tmpBuffer;
+	//return memcpy(new char[m_size] + pos++, tmpBuffer, m_size * sizeof(T));
+	return std::vector<char>(m_buffer->data() + pos, m_buffer->data() + pos + sizeOfData);
+}
+
+const std::vector<char>* Deserializer::getBuffer() {
 	return m_buffer;
 }
 

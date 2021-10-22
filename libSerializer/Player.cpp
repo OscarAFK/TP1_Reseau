@@ -16,3 +16,28 @@ void Player::Print() {
 		<< "\nArmure: " << m_armure
 		<< "\nArgent: " << m_argent  << "\n---------------"<< std::endl;
 }
+
+void Player::Write(Serializer* s)
+{
+	m_position.Write(s);
+	m_taille.Write(s);
+	m_rotation.Write(s);
+	s->Serialize(m_vie);
+	s->Serialize(m_armure);
+	s->Serialize(m_argent);
+	//s->Serialize(m_nom, 128);
+}
+
+void Player::Read(Deserializer *d)
+{
+	m_position.Read(d);
+	m_taille.Read(d);
+	m_rotation.Read(d);
+	m_vie = d->Read<int>();
+	m_armure = d->Read<int>();
+	m_argent = d->Read<float>();
+	/*std::vector<char> nom = d->Read(128);
+	std::copy(reinterpret_cast<char*>(nom.data()),
+		reinterpret_cast<char*>(nom.data()) + nom.size(),
+		m_nom);*/
+}

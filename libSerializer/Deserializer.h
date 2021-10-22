@@ -1,27 +1,26 @@
 #pragma once
-
-#include <ws2tcpip.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-#include <string>
+#include <vector>
 
 class Deserializer {
 public:
 	Deserializer();
-	Deserializer(char* buffer, int size);
+	Deserializer(std::vector<char>* buffer, int size);
 	~Deserializer();
-
-	template <typename T>
-	void Deserialize(T& val) {
-		InputStream stream;
-		val.Read(InputStream & stream);
+	
+	template <typename T, std::enable_if_t<std::is_arithmetic_v<std::remove_reference_t<T>>>* = nullptr>
+	T Read() {
+		T retValue = *reinterpret_cast<T*>(m_buffer->data() + pos);
+		pos += sizeof(retValue) / sizeof(char);
+		return retValue;
 	}
 
-	const char* getBuffer();
+	std::vector<char> Read(int sizeOfData);
+
+	const std::vector<char>* getBuffer();
 	const int getSize();
 
 private:
-	char* m_buffer;
+	std::vector<char> * m_buffer;
 	int m_size;
+	int pos;
 };

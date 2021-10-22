@@ -1,4 +1,7 @@
 #include <cstdint>
+#include "Serializer.h"
+#include "Deserializer.h"
+#include "Deserializer.h"
 
 enum class PlateformEndianess {
 	BigEndian,
@@ -35,6 +38,9 @@ struct Quaternion {
 		z = _z;
 		w = _w;
 	}
+
+	void Write(Serializer * s);
+	void Read(Deserializer* d);
 };
 
 struct Vector3 {
@@ -45,4 +51,7 @@ struct Vector3 {
 		y = _y;
 		z = _z;
 	}
+
+	void Write(Serializer* s);
+	void Read(Deserializer* d);
 };

@@ -1,6 +1,6 @@
 #include "framework.h"
-#include <algorithm>
 #include <iostream>
+#include "Serializer.h"
 
 class Player {
 public:
@@ -8,8 +8,8 @@ public:
 	Player(Vector3 position, Vector3 taille, Quaternion rotation, int vie, int armure, float argent, char nom[128]);
 
 	void Print();
-	void Write();
-	void Read();
+	void Write(Serializer * s);
+	void Read(Deserializer* d);
 
 private:
 	Vector3 m_position;
