@@ -136,10 +136,15 @@ Quaternion_16 Compressor::compressQuaternions(Quaternion quaternion)
 {
 	std::cout << "---- Start Quaternion Compression ---- " << std::endl;
 
+	// define variable
+	float minValue = -1;
+	float maxValue = 1;
+	float precision = 3;
+	
 	return Quaternion_16(
-		compressFloat(quaternion.x, -1, 1, 2),
-		compressFloat(quaternion.y, -1, 1, 2),
-		compressFloat(quaternion.z, -1, 1, 2)
+		compressFloat(quaternion.x, minValue, maxValue, precision),
+		compressFloat(quaternion.y, minValue, maxValue, precision),
+		compressFloat(quaternion.z, minValue, maxValue, precision)
 	);
 }
 
@@ -147,9 +152,14 @@ Quaternion Compressor::decompressQuaternions(Quaternion_16 quaternion)
 {
 	std::cout << "---- Start Quaternion DeCompression ---- " << std::endl;
 
-	float _x = decompressFloat(quaternion.x, -1, 1, 2);
-	float _y = decompressFloat(quaternion.y, -1, 1, 2);
-	float _z = decompressFloat(quaternion.z, -1, 1, 2);
+	// define variable
+	float minValue = -1;
+	float maxValue = 1;
+	float precision = 3; 
+
+	float _x = decompressFloat(quaternion.x, minValue, maxValue, precision);
+	float _y = decompressFloat(quaternion.y, minValue, maxValue, precision);
+	float _z = decompressFloat(quaternion.z, minValue, maxValue, precision);
 	return Quaternion(
 		_x,
 		_y,
