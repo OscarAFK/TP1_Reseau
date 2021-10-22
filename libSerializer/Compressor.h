@@ -26,6 +26,16 @@ struct Vector3_16 {
 	}
 };
 
+struct Quaternion_16 {
+	uint16_t x, y, z;
+
+	Quaternion_16(uint16_t _x, uint16_t _y, uint16_t _z) {
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+};
+
 class Compressor
 {
 private :
@@ -45,6 +55,8 @@ public :
 	Vector3_16 compressVector3(Vector3 vector, float minFloat, float maxFloat, int precision);
 	Vector3 decompressVector3(Vector3_16 vector, float minFloat, float maxFloat, int precision);
 
+	Quaternion_16 compressQuaternions(Quaternion quaternion);
+	Quaternion decompressQuaternions(Quaternion_16 quaternion);
 
 };
 
