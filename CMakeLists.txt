@@ -3,12 +3,12 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("TPs_Reseau")
+project ("TP_Reseau")
 
 
 
 ##########La lib du TP1
-set(TP1_libSocket_SRC 
+set(${PROJECT_NAME}_libSocket_SRC 
                         "libSocket/client.cpp"
                         "libSocket/server.cpp"
 						"libSocket/Terminal.cpp"
@@ -19,7 +19,7 @@ set(TP1_libSocket_SRC
 						"libSocket/SocketManager.cpp"
 						)
 
-set(TP1_libSocket_HEADERS "libSocket/client.h"
+set(${PROJECT_NAME}_libSocket_HEADERS "libSocket/client.h"
                             "libSocket/server.h"
 							"libSocket/Connection.h"
 							"libSocket/Terminal.h"
@@ -28,37 +28,35 @@ set(TP1_libSocket_HEADERS "libSocket/client.h"
 							"libSocket/Network.h"
 							"libSocket/SocketManager.h")
 
-add_library(TP1_libSocket STATIC ${TP1_libSocket_SRC} ${TP1_libSocket_HEADERS})
+add_library(${PROJECT_NAME}_libSocket STATIC ${${PROJECT_NAME}_libSocket_SRC} ${${PROJECT_NAME}_libSocket_HEADERS})
 
 ##########
 
 ##########La lib du TP2
-set(TP2_libSerializer_SRC 
+set(${PROJECT_NAME}_libSerializer_SRC 
                         "libSerializer/framework.cpp"
                         "libSerializer/Serializer.cpp"
-                        "libSerializer/Deserializer.cpp"
+                        "libSerializer/Compressor.cpp"                        
 						)
 
-set(TP2_libSerializer_HEADERS
+set(${PROJECT_NAME}_libSerializer_HEADERS
 						"libSerializer/framework.h"
 						"libSerializer/Serializer.h"
-						"libSerializer/Deserializer.h"
+						"libSerializer/Compressor.h"
 						)
 
-add_library(TP2_libSerializer STATIC ${TP2_libSerializer_SRC} ${TP2_libSerializer_HEADERS})
+add_library(${PROJECT_NAME}_libSerializer STATIC ${${PROJECT_NAME}_libSerializer_SRC} ${${PROJECT_NAME}_libSerializer_HEADERS})
 
 ##########
 
 
 #Les executables du TP1
-add_executable( "TP1_Server" "libSocket/mainServer.cpp" )
-target_link_libraries( "TP1_Server" PUBLIC TP1_libSocket )
+add_executable( "server" "libSocket/mainServer.cpp" )
+target_link_libraries( "server" PUBLIC ${PROJECT_NAME}_libSocket )
 
-add_executable( "TP1_Client" "libSocket/mainClient.cpp" )
-target_link_libraries( "TP1_Client" PUBLIC TP1_libSocket )
+add_executable( "client" "libSocket/mainClient.cpp" )
+target_link_libraries( "client" PUBLIC ${PROJECT_NAME}_libSocket )
 
-
-#L'executable du TP2
-add_executable( "TP2_PlayerSerialization" "libSerializer/mainSerialization.cpp" "libSerializer/Player.cpp" "libSerializer/Player.h")
-target_link_libraries( "TP2_PlayerSerialization" PUBLIC TP2_libSerializer )
+add_executable( "compressor" "libSerializer/mainCompressor.cpp" )
+target_link_libraries( "compressor" PUBLIC ${PROJECT_NAME}_libSerializer )
 
