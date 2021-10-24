@@ -113,7 +113,7 @@ Vector3_16 Compressor::compressVector3(Vector3 vector, float minFloatX, float ma
 														float minFloatZ, float maxFloatZ, int precision)
 {
 	std::cout << "---- Start Vector Compression ---- " << std::endl;
-
+	std::cout << "Vector x = " << vector.x << ", y = " << vector.y << ", z = " << vector.z << std::endl;
 	return Vector3_16(
 		compressFloat<uint16_t>(vector.x, minFloatX, maxFloatX, precision),
 		compressFloat<uint16_t>(vector.y, minFloatY, maxFloatY, precision),
@@ -126,11 +126,17 @@ Vector3 Compressor::decompressVector3(Vector3_16 vector, float minFloatX, float 
 												float minFloatZ, float maxFloatZ, int precision)
 {
 	std::cout << "---- Start Vector DeCompression ---- " << std::endl;
-	return Vector3(
+
+
+	Vector3 vectorDecomp = Vector3(
 		decompressFloat(vector.x, minFloatX, maxFloatX, precision),
 		decompressFloat(vector.y, minFloatY, maxFloatY, precision),
 		decompressFloat(vector.z, minFloatZ, maxFloatZ, precision)
 	);
+
+	std::cout << "Vector x = " << vectorDecomp.x << ", y = " << vectorDecomp.y << ", z = " << vectorDecomp.z << std::endl;
+
+	return vectorDecomp;
 }
 
 
@@ -164,10 +170,15 @@ Quaternion Compressor::decompressQuaternions(Quaternion_16 quaternion)
 	float _x = decompressFloat(quaternion.x, minValue, maxValue, precision);
 	float _y = decompressFloat(quaternion.y, minValue, maxValue, precision);
 	float _z = decompressFloat(quaternion.z, minValue, maxValue, precision);
-	return Quaternion(
+
+	Quaternion quatDecomp = Quaternion(
 		_x,
 		_y,
 		_z,
 		sqrt(1 - (pow(_x, 2) + pow(_y, 2) + pow(_z, 2)))
 	);
+
+	std::cout << "("<< quatDecomp.x << "," << quatDecomp.y << "," << quatDecomp.z << "," << quatDecomp.w << ")" << std::endl;
+
+	return quatDecomp;
 }
