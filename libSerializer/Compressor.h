@@ -44,16 +44,47 @@ private :
 
 public : 
 
+	template <typename T, std::enable_if_t<std::is_arithmetic_v<std::remove_reference_t<T>>>* = nullptr>
+	T compressFloat(float value, float minFloat, float maxFloat, int precision) {
+		std::cout << "Start Float Compression" << std::endl;
+		std::cout << "value : " << value << " has size : " << sizeof(value) << std::endl;
 
-	uint16_t compressFloat(float value, float minFloat, float maxFloat, int precision);
-	float decompressFloat(uint16_t value, float minFloat, float maxFloat, int precision);
+		float range = getRange(minFloat, maxFloat) * pow(10, precision);
+		std::cout << "Precision = " << precision << " ----> Range : 0 to " << range << std::endl;
+
+		float valueChange = value + abs(minFloat);	// make the value unsigned
+		std::cout << "Val unsigned = " << valueChange << std::endl;
+
+		valueChange = valueChange * pow(10, precision);	// change the precision for the value
+		std::cout << "Val unsigned with precision = " << valueChange << std::endl;
+
+
+		std::cout << "value : " << valueChange << " has size : " << sizeof(valueChange) << std::endl;
+
+		// compression vers uint16_t
+		T comp;
+		comp = valueChange;
+
+		std::cout << "now value : " << comp << " has size : " << sizeof(comp) << std::endl;
+		std::cout << "\n\n";
+		return comp;
+	}
+
+
+	//uint16_t compressFloat(float value, float minFloat, float maxFloat, int precision);
+	float decompressFloat(uint32_t value, float minFloat, float maxFloat, int precision);
+
 
 
 	uint16_t compressInt(int value, int minInt, int maxInt);
 	int decompressInt(uint16_t value, int minInt, int maxInt);
 
-	Vector3_16 compressVector3(Vector3 vector, float minFloat, float maxFloat, int precision);
-	Vector3 decompressVector3(Vector3_16 vector, float minFloat, float maxFloat, int precision);
+	Vector3_16 compressVector3(Vector3 vector, float minFloatX, float maxFloatX,
+												float minFloatY, float maxFloatY,
+												float minFloatZ, float maxFloatZ, int precision);
+	Vector3 decompressVector3(Vector3_16 vector, float minFloat, float maxFloat, 
+													float minFloatY, float maxFloatY,
+													float minFloatZ, float maxFloatZ, int precision);
 
 	Quaternion_16 compressQuaternions(Quaternion quaternion);
 	Quaternion decompressQuaternions(Quaternion_16 quaternion);

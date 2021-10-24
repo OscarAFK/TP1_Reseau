@@ -1,6 +1,9 @@
+#pragma once
 #include "framework.h"
 #include <iostream>
 #include "Serializer.h"
+#include "Compressor.h"
+#include "Deserializer.h"
 
 class Player {
 public:

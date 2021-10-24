@@ -19,23 +19,63 @@ void Player::Print() {
 
 void Player::Write(Serializer* s)
 {
-	m_position.Write(s);
-	m_taille.Write(s);
-	m_rotation.Write(s);
-	s->Serialize(m_vie);
-	s->Serialize(m_armure);
-	s->Serialize(m_argent);
+	Compressor comp;
+
+	Vector3_16 posComp = comp.compressVector3(m_position, -500, 500, -500,500,0,100 , 3);
+	s->Serialize(posComp.x);
+	s->Serialize(posComp.y);
+	s->Serialize(posComp.z);
+	
+	Vector3_16 tailleComp = comp.compressVector3(m_taille, -500, 500, -500, 500, 0, 100, 3);
+	s->Serialize(tailleComp.x);
+	s->Serialize(tailleComp.y);
+	s->Serialize(tailleComp.z);
+
+	Quaternion_16 quatComp = comp.compressQuaternions(m_rotation);
+	s->Serialize(quatComp.x);
+	s->Serialize(quatComp.y);
+	s->Serialize(quatComp.z);
+
+	uint16_t vieComp = comp.compressInt(m_vie, 0, 300);
+	uint16_t armureComp = comp.compressInt(m_armure, 0, 50);
+	uint32_t argentComp = comp.compressFloat<uint32_t>(m_argent, -99999, 99999, 3);
+
 	//s->Serialize(m_nom, 128);
 }
 
 void Player::Read(Deserializer *d)
 {
-	m_position.Read(d);
-	m_taille.Read(d);
-	m_rotation.Read(d);
-	m_vie = d->Read<int>();
-	m_armure = d->Read<int>();
-	m_argent = d->Read<float>();
+	Compressor comp;
+
+	
+	uint16_t posXComp = d->Read<uint16_t>();
+	uint16_t posYComp = d->Read<uint16_t>();
+	uint16_t posZComp = d->Read<uint16_t>();
+	Vector3_16 posComp = Vector3_16(posXComp, posYComp, posZComp);
+	m_position = comp.decompressVector3(posComp, -500, 500, -500, 500, 0, 100, 3);
+	
+	uint16_t tailleXComp = d->Read<uint16_t>();
+	uint16_t tailleYComp = d->Read<uint16_t>();
+	uint16_t tailleZComp = d->Read<uint16_t>();
+	Vector3_16 tailleComp = Vector3_16(tailleXComp, tailleYComp, tailleZComp);
+	m_taille = comp.decompressVector3(tailleComp, -500, 500, -500, 500, 0, 100, 3);
+
+	uint16_t rotXComp = d->Read<uint16_t>();
+	uint16_t rotYComp = d->Read<uint16_t>();
+	uint16_t rotZComp = d->Read<uint16_t>();
+	Quaternion_16 rotComp = Quaternion_16(tailleXComp, tailleYComp, tailleZComp);
+	m_rotation = comp.decompressQuaternions(rotComp);
+
+
+	uint16_t vieComp = d->Read<uint16_t>();
+	m_vie = comp.decompressInt(vieComp, 0, 300);
+
+	uint16_t armureComp = d->Read<uint16_t>();
+	m_armure = comp.decompressInt(armureComp, 0, 50);
+
+	uint32_t argentComp = d->Read<uint32_t>();
+	m_armure = comp.decompressFloat(argentComp, -99999, 99999,3);
+	
 	/*std::vector<char> nom = d->Read(128);
 	std::copy(reinterpret_cast<char*>(nom.data()),
 		reinterpret_cast<char*>(nom.data()) + nom.size(),

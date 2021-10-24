@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include "Compressor.h"
 
 class Serializer 
 {
@@ -28,7 +29,6 @@ public:
 	std::vector<char>* getContainer();
 
 private:
-
 
 	std::vector<char> m_container;
 	int m_posContainer;

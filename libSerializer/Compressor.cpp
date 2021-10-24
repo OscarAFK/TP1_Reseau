@@ -18,7 +18,7 @@ float Compressor::getRange(float min , float max) {
 
 //---------------------FLOAT----------------------------
 
-uint16_t Compressor::compressFloat(float value, float minFloat, float maxFloat, int precision)
+/*uint16_t Compressor::compressFloat(float value, float minFloat, float maxFloat, int precision)
 {
 	
 	std::cout << "Start Float Compression" << std::endl;
@@ -43,10 +43,10 @@ uint16_t Compressor::compressFloat(float value, float minFloat, float maxFloat, 
 	std::cout << "now value : " << comp << " has size : " << sizeof(comp) << std::endl;
 	std::cout << "\n\n";
 	return comp;
-}
+}*/
 
 
-float Compressor::decompressFloat(uint16_t value, float minFloat, float maxFloat, int precision)
+float Compressor::decompressFloat(uint32_t value, float minFloat, float maxFloat, int precision)
 {
 	std::cout << "Start Float Decompression" << std::endl;
 
@@ -108,24 +108,28 @@ int Compressor::decompressInt(uint16_t value, int minInt, int maxInt)
 
 
 //--------------------- Vector3 ----------------------------
-Vector3_16 Compressor::compressVector3(Vector3 vector, float minFloat, float maxFloat, int precision)
+Vector3_16 Compressor::compressVector3(Vector3 vector, float minFloatX, float maxFloatX, 
+														float minFloatY, float maxFloatY, 
+														float minFloatZ, float maxFloatZ, int precision)
 {
 	std::cout << "---- Start Vector Compression ---- " << std::endl;
 
 	return Vector3_16(
-		compressFloat(vector.x, minFloat, maxFloat, precision),
-		compressFloat(vector.y, minFloat, maxFloat, precision),
-		compressFloat(vector.z, minFloat, maxFloat, precision)
+		compressFloat<uint16_t>(vector.x, minFloatX, maxFloatX, precision),
+		compressFloat<uint16_t>(vector.y, minFloatY, maxFloatY, precision),
+		compressFloat<uint16_t>(vector.z, minFloatZ, maxFloatZ, precision)
 		);
 }
 
-Vector3 Compressor::decompressVector3(Vector3_16 vector, float minFloat, float maxFloat, int precision)
+Vector3 Compressor::decompressVector3(Vector3_16 vector, float minFloatX, float maxFloatX,
+												float minFloatY, float maxFloatY,
+												float minFloatZ, float maxFloatZ, int precision)
 {
 	std::cout << "---- Start Vector DeCompression ---- " << std::endl;
 	return Vector3(
-		decompressFloat(vector.x, minFloat, maxFloat, precision),
-		decompressFloat(vector.y, minFloat, maxFloat, precision),
-		decompressFloat(vector.z, minFloat, maxFloat, precision)
+		decompressFloat(vector.x, minFloatX, maxFloatX, precision),
+		decompressFloat(vector.y, minFloatY, maxFloatY, precision),
+		decompressFloat(vector.z, minFloatZ, maxFloatZ, precision)
 	);
 }
 
@@ -142,9 +146,9 @@ Quaternion_16 Compressor::compressQuaternions(Quaternion quaternion)
 	float precision = 3;
 	
 	return Quaternion_16(
-		compressFloat(quaternion.x, minValue, maxValue, precision),
-		compressFloat(quaternion.y, minValue, maxValue, precision),
-		compressFloat(quaternion.z, minValue, maxValue, precision)
+		compressFloat<uint16_t>(quaternion.x, minValue, maxValue, precision),
+		compressFloat<uint16_t>(quaternion.y, minValue, maxValue, precision),
+		compressFloat<uint16_t>(quaternion.z, minValue, maxValue, precision)
 	);
 }
 
