@@ -21,12 +21,12 @@ void Player::Write(Serializer* s)
 {
 	Compressor comp;
 
-	Vector3_16 posComp = comp.compressVector3(m_position, -500, 500, -500,500,0,100 , 3);
+	Vector3_32 posComp = comp.compressVector3_32(m_position, -500, 500, -500,500,0,100 , 3);
 	s->Serialize(posComp.x);
 	s->Serialize(posComp.y);
 	s->Serialize(posComp.z);
 	
-	Vector3_16 tailleComp = comp.compressVector3(m_taille, -500, 500, -500, 500, 0, 100, 3);
+	Vector3_32 tailleComp = comp.compressVector3_32(m_taille, -500, 500, -500, 500, 0, 100, 3);
 	s->Serialize(tailleComp.x);
 	s->Serialize(tailleComp.y);
 	s->Serialize(tailleComp.z);
@@ -39,7 +39,9 @@ void Player::Write(Serializer* s)
 	uint16_t vieComp = comp.compressInt(m_vie, 0, 300);
 	uint16_t armureComp = comp.compressInt(m_armure, 0, 50);
 	uint32_t argentComp = comp.compressFloat<uint32_t>(m_argent, -99999, 99999, 3);
-
+	s->Serialize(vieComp);
+	s->Serialize(armureComp);
+	s->Serialize(argentComp);
 	//s->Serialize(m_nom, 128);
 }
 
@@ -48,17 +50,17 @@ void Player::Read(Deserializer *d)
 	Compressor comp;
 
 	
-	uint16_t posXComp = d->Read<uint16_t>();
-	uint16_t posYComp = d->Read<uint16_t>();
-	uint16_t posZComp = d->Read<uint16_t>();
-	Vector3_16 posComp = Vector3_16(posXComp, posYComp, posZComp);
-	m_position = comp.decompressVector3(posComp, -500, 500, -500, 500, 0, 100, 3);
+	uint32_t posXComp = d->Read<uint32_t>();
+	uint32_t posYComp = d->Read<uint32_t>();
+	uint32_t posZComp = d->Read<uint32_t>();
+	Vector3_32 posComp = Vector3_32(posXComp, posYComp, posZComp);
+	m_position = comp.decompressVector3_32(posComp, -500, 500, -500, 500, 0, 100, 3);
 	
-	uint16_t tailleXComp = d->Read<uint16_t>();
-	uint16_t tailleYComp = d->Read<uint16_t>();
-	uint16_t tailleZComp = d->Read<uint16_t>();
-	Vector3_16 tailleComp = Vector3_16(tailleXComp, tailleYComp, tailleZComp);
-	m_taille = comp.decompressVector3(tailleComp, -500, 500, -500, 500, 0, 100, 3);
+	uint32_t tailleXComp = d->Read<uint32_t>();
+	uint32_t tailleYComp = d->Read<uint32_t>();
+	uint32_t tailleZComp = d->Read<uint32_t>();
+	Vector3_32 tailleComp = Vector3_32(tailleXComp, tailleYComp, tailleZComp);
+	m_taille = comp.decompressVector3_32(tailleComp, -500, 500, -500, 500, 0, 100, 3);
 
 	uint16_t rotXComp = d->Read<uint16_t>();
 	uint16_t rotYComp = d->Read<uint16_t>();
