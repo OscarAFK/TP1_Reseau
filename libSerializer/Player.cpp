@@ -63,7 +63,7 @@ void Player::Read(Deserializer *d)
 	uint16_t rotXComp = d->Read<uint16_t>();
 	uint16_t rotYComp = d->Read<uint16_t>();
 	uint16_t rotZComp = d->Read<uint16_t>();
-	Quaternion_16 rotComp = Quaternion_16(tailleXComp, tailleYComp, tailleZComp);
+	Quaternion_16 rotComp = Quaternion_16(rotXComp, rotYComp, rotZComp);
 	m_rotation = comp.decompressQuaternions(rotComp);
 
 
@@ -74,7 +74,7 @@ void Player::Read(Deserializer *d)
 	m_armure = comp.decompressInt(armureComp, 0, 50);
 
 	uint32_t argentComp = d->Read<uint32_t>();
-	m_armure = comp.decompressFloat(argentComp, -99999, 99999,3);
+	m_argent = comp.decompressFloat(argentComp, -99999, 99999,3);
 	
 	/*std::vector<char> nom = d->Read(128);
 	std::copy(reinterpret_cast<char*>(nom.data()),
