@@ -14,7 +14,7 @@
  */
 #include <iostream>
 #include <bitset>
-#include "framework.h"
+#include "../utils/framework.h"
 
 struct Vector3_16 {
 	uint16_t x, y, z;
