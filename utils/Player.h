@@ -1,11 +1,7 @@
 #pragma once
-#include "framework.h"
-#include <iostream>
-#include "Serializer.h"
-#include "Compressor.h"
-#include "Deserializer.h"
+#include "NetworkObject.h"
 
-class Player {
+class Player : public NetworkObject {
 public:
 
 	Player(Vector3 position, Vector3 taille, Quaternion rotation, int vie, int armure, float argent, char nom[128]);
