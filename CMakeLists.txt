@@ -69,11 +69,13 @@ add_library(TP2_libSerializer STATIC ${TP2_libSerializer_SRC} ${TP2_libSerialize
 set(TP3_libReplication_SRC 
                         "libReplication/ClassRegistry.cpp"
 						"libReplication/ReplicationManager.cpp"
+						"libReplication/LinkingContext.cpp"
 						)
 
 set(TP3_libReplication_HEADERS
 						"libReplication/ClassRegistry.h"
 						"libReplication/ReplicationManager.h"
+						"libReplication/LinkingContext.h"
 						)
 
 add_library(TP3_libReplication STATIC ${TP3_libReplication_SRC} ${TP3_libReplication_HEADERS})
