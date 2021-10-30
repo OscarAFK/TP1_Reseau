@@ -12,10 +12,12 @@ class Enemy : public NetworkObject {
 public:
 
 	Enemy(Vector3 position, Quaternion rotation, int vie, typeEnemy tEnemy);
+	Enemy();
 
 	void Print();
 	void Write(Serializer * s);
 	void Read(Deserializer* d);
+	static Enemy* Create() { return new Enemy(); }
 
 private:
 	Vector3 m_position;

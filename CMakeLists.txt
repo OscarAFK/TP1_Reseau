@@ -5,39 +5,25 @@ cmake_minimum_required (VERSION 3.8)
 
 project ("TP3_Reseau")
 
-
-include(FetchContent)
-
-FetchContent_Declare(
-  TP1_Reseau_Sockets
-  GIT_REPOSITORY https://github.com/OscarAFK/TP1_Reseau_Sockets.git
-  GIT_TAG        9649226bfa9ac71b1e93050b4e4063283b918a5d
-)
-
-FetchContent_Declare(
-  TP2_Reseau_Serialization
-  GIT_REPOSITORY https://github.com/OscarAFK/TP2_Reseau_Serialization.git
-  GIT_TAG        277c702454fdf51a8f721872cca8f0f9f8c4408c
-)
-
-FetchContent_MakeAvailable(TP1_Reseau_Sockets)
-FetchContent_MakeAvailable(TP2_Reseau_Serialization)
+add_subdirectory(includes)
 
 ##########La lib d'utilities
-set(Utils_SRC 
+set(Utils_TP3_SRC 
                         "utils/framework.cpp"
                         "utils/NetworkObject.cpp"
                         "utils/Enemy.cpp"
                         "utils/Player.cpp"
 						)
 
-set(Utils_HEADERS 
+set(Utils_TP3_HEADERS 
 							"utils/framework.h"
                             "utils/NetworkObject.h"
                             "utils/Enemy.h"
                             "utils/Player.h")
 
-add_library(Utils_TP3 STATIC ${Utils_SRC} ${Utils_HEADERS})
+add_library(Utils_TP3 STATIC ${Utils_TP3_SRC} ${Utils_TP3_HEADERS})
+target_link_libraries( Utils_TP3 PUBLIC TP1_libSocket TP2_libSerializer)
+target_include_directories(Utils_TP3 PUBLIC utils)
 
 ##########
 
@@ -55,15 +41,18 @@ set(TP3_libReplication_HEADERS
 						)
 
 add_library(TP3_libReplication STATIC ${TP3_libReplication_SRC} ${TP3_libReplication_HEADERS})
+target_link_libraries( TP3_libReplication PUBLIC TP1_libSocket TP2_libSerializer)
+target_include_directories(TP3_libReplication PUBLIC libReplication)
 
 ##########
 
-#Les executables du TP3
-add_executable( "TP3_Server" "libReplication/mainServer.cpp" )
-target_link_libraries( "TP3_Server" PUBLIC TP3_libReplication )
-target_link_libraries( "TP3_Server" PUBLIC Utils_TP3 )
+target_include_directories(TP3_libReplication PUBLIC Utils_TP3)
+target_include_directories(Utils_TP3 PUBLIC libReplication)
 
-add_executable( "TP3_Client" "libReplication/mainClient.cpp" )
-target_link_libraries( "TP3_Client" PUBLIC TP3_libReplication )
-target_link_libraries( "TP3_Client" PUBLIC Utils_TP3 )
+#Les executables du TP3
+add_executable( TP3_Server "libReplication/mainServer.cpp" )
+target_link_libraries( TP3_Server PUBLIC TP3_libReplication Utils_TP3)
+
+add_executable( TP3_Client "libReplication/mainClient.cpp" )
+target_link_libraries( TP3_Client PUBLIC TP3_libReplication Utils_TP3)
 

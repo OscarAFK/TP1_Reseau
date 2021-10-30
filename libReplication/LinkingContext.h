@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
-#include "../utils/framework.h"
-#include "../utils/NetworkObject.h"
+#include <framework.h>
+#include <NetworkObject.h>
 #include <optional>
 
 
