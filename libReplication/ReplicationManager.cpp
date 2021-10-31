@@ -2,32 +2,31 @@
 
 void ReplicationManager::Update(std::vector<NetworkObject*> alloR, Serializer* s, Deserializer* d)
 {
+	SendWorld(alloR, s);
+
+	RecvWorld(d);
+}
+
+void ReplicationManager::SendWorld(std::vector<NetworkObject*> alloR, Serializer* s)
+{
 	/////////On réplique le monde
-
-	//On ne s'occupe pas encore de l'identifiant du protocole
-
-	//Le type du packet
-	uint8_t pTSend = (uint8_t)PacketType::Sync;
-	s->Serialize(pTSend);
-
 	//Tout les objets à répliquer
-	for each (NetworkObject* oR in alloR)
+	for each (NetworkObject * oR in alloR)
 	{
 		SerializeObject(s, oR);
 	}
-	
-	//La taille du packet
-	v.insert(v.begin() + i, valueToInsert);
+}
 
+void ReplicationManager::RecvWorld(Deserializer* d)
+{
 	/////////On reçoit le monde
-
 	//On vérifie le type du packet
 	PacketType pTRecv = PacketType(d->Read<uint8_t>());
 	if (pTRecv == PacketType::Sync) {
-
-		std::unordered_set<NetworkObject*> objectRecv;
-
-
+		while (!d->isBufferCompletelyRead()) {
+			auto nO = DeserializeObject(d);
+			m_objectsReplicated.insert(nO);
+		}
 	}
 }
 
@@ -44,7 +43,16 @@ void ReplicationManager::SerializeObject(Serializer *s, NetworkObject* oR)
 	oR->Write(s);
 }
 
-void ReplicationManager::DeserializeObject(Deserializer* d)
+NetworkObject* ReplicationManager::DeserializeObject(Deserializer* d)
 {
+	int nId = d->Read<int>();
+	int cId = d->Read<int>();
 
+	std::optional<NetworkObject*> nO = m_linkingContext->getNetworkObject(nId);
+	if (!nO) {
+		nO = ClassRegistry::Get().Create(ClassID(cId));
+		m_linkingContext->addNetworkObject(*nO);
+	}
+	(*nO)->Read(d);
+	return (*nO);
 }
