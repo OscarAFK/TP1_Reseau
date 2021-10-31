@@ -19,6 +19,7 @@ void Player::Print() {
 
 void Player::Write(Serializer* s)
 {
+
 	Compressor comp;
 
 	Vector3_32 posComp = comp.compressVector3_32(m_position, -500, 500, -500,500,0,100 , 3);
@@ -47,8 +48,8 @@ void Player::Write(Serializer* s)
 
 void Player::Read(Deserializer *d)
 {
-	Compressor comp;
 
+	Compressor comp;
 	
 	uint32_t posXComp = d->Read<uint32_t>();
 	uint32_t posYComp = d->Read<uint32_t>();

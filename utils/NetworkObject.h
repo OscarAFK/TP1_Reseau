@@ -12,8 +12,8 @@ public:
 	~NetworkObject() = default;
 
 	virtual void Print() = 0;
-	virtual void Write(Serializer * s) = 0;
-	virtual void Read(Deserializer* d) = 0;
+	virtual void Write(Serializer * s);
+	virtual void Read(Deserializer* d);
 
 	ClassID m_classID;
 };

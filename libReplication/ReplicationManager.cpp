@@ -1,76 +1,50 @@
 #include "ReplicationManager.h"
 
-void ReplicationManager::ReplicateIntoStream(
-	OutputMemoryBitStream& inStream,
-	GameObject* inGameObject)
+void ReplicationManager::Update(std::vector<NetworkObject*> alloR, Serializer* s, Deserializer* d)
 {
-	// wrtie game obj ID
-	inStream.Write(mLinkingContext->GetNetworkId(inGameObject, true));
+	/////////On réplique le monde
 
-	// write game obj class
-	inStream.Write(inGameObject->GetClassId());
+	//On ne s'occupe pas encore de l'identifiant du protocole
 
-	// write game object data
-	inGameObject->Write(inStream);
-}
+	//Le type du packet
+	uint8_t pTSend = (uint8_t)PacketType::Sync;
+	s->Serialize(pTSend);
 
-void ReplicationManager::ReplicateWorldState(
-	OutputMemoryBitStream& inStream,
-	const vector<GameObject*>& inAllObjects)
-{
-	// tag as replication data
-	inStream.WriteBits(PT_ReplicationData, GetRequiredBits<PT_MAW>::Value);
-
-	// write each obj
-	for (GameObject* obj : inAllObjects) {
-		ReplicateIntoStream(inStream, obj);
+	//Tout les objets à répliquer
+	for each (NetworkObject* oR in alloR)
+	{
+		SerializeObject(s, oR);
 	}
-}
-
-
-
-void ReplicationManager::ReceiveReplicatedObects(InputMemoryBitStream& inStream) 
-{
-	unordered_set<GameObject*> receivedObjects;
 	
-	while (inStream.GetRemainingBitCount() > 0) 
-	{
-		GameObject* receivedGameObject = ReceiveReplicatedObject(inStream);
-		receivedObjects.insert(receivedGameObject);
-	}
+	//La taille du packet
+	v.insert(v.begin() + i, valueToInsert);
 
-	//now run through mObjectsReplicatedToMe.
-	//if an objject insn't in the recently replicated set,
-	//destroy it
-	for (GameObject* go : mObjectsReplicateToMe)
-	{
-		if (receivedObjects.find(go) != receivedGameObject.end()) 
-		{
-			mLinkingContext->Remove(go);
-			go->Destroy();
-		}
-	}
+	/////////On reçoit le monde
 
-	mObjectReplicatedToMe = receivedObjects;
+	//On vérifie le type du packet
+	PacketType pTRecv = PacketType(d->Read<uint8_t>());
+	if (pTRecv == PacketType::Sync) {
+
+		std::unordered_set<NetworkObject*> objectRecv;
+
+
+	}
 }
 
-GameObject* ReplicationManager::ReceiveReplicatedObject(InputMemoryBitStream& inStream)
+void ReplicationManager::SerializeObject(Serializer *s, NetworkObject* oR)
 {
-	uint32_t networId;
-	uint32_t classId;
-	inStream.Read(networdId);
-	inStream.Read(classid);
+	//Serialize the network ID
+	std::optional<int> nO = m_linkingContext->getNetworkId(oR);
+	s->Serialize(*nO);
 
-	GameObject* go = mLinkingContext->GetGameObject(networkId);
-	if (!go) 
-	{
-		go = ObjectCreationRegistry::Get().CreateGameObject(classId);
-		mLinkingContext->AddGameObject(go, networkId);
-	}
+	//Serialize the class ID
+	oR->NetworkObject::Write(s);
 
-	//now read update
-	go->Read(inStream);
+	//Serialize the object
+	oR->Write(s);
+}
 
-	//return gameobject so we can track it was received in pacet
-	return go;
+void ReplicationManager::DeserializeObject(Deserializer* d)
+{
+
 }

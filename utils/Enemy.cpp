@@ -14,6 +14,7 @@ void Enemy::Print() {
 
 void Enemy::Write(Serializer* s)
 {
+
 	Compressor comp;
 
 	Vector3_32 posComp = comp.compressVector3_32(m_position, -500, 500, -500,500,0,100 , 4);
@@ -38,7 +39,6 @@ void Enemy::Write(Serializer* s)
 void Enemy::Read(Deserializer *d)
 {
 	Compressor comp;
-
 	
 	uint32_t posXComp = d->Read<uint32_t>();
 	uint32_t posYComp = d->Read<uint32_t>();
