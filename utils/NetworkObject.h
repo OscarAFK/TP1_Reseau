@@ -1,19 +1,24 @@
 #pragma once
-#include "framework.h"
+#include <frameworkTP3.h>
 #include <iostream>
 #include <Serializer.h>
 #include <Deserializer.h>
 
-class NetworkObject {
-public:
+namespace uqac {
+	namespace replication {
 
-	NetworkObject(ClassID classID) : m_classID(classID) {};
-	NetworkObject() = default;
-	~NetworkObject() = default;
+		class NetworkObject {
+		public:
 
-	virtual void Print() = 0;
-	virtual void Write(Serializer * s);
-	virtual void Read(Deserializer* d);
+			NetworkObject(ClassID classID) : m_classID(classID) {};
+			NetworkObject() = default;
+			~NetworkObject() = default;
 
-	ClassID m_classID;
-};
+			virtual void Print() = 0;
+			virtual void Write(serialization::Serializer* s);
+			virtual void Read(serialization::Deserializer* d);
+
+			ClassID m_classID;
+		};
+	}
+}

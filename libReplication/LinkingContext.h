@@ -1,24 +1,26 @@
 #pragma once
 #include <map>
-#include <framework.h>
+#include <frameworkTP3.h>
 #include <NetworkObject.h>
 #include <optional>
 
+namespace uqac {
+	namespace replication {
+		class LinkingContext {
+		public:
+			void addNetworkObject(NetworkObject* nO);
+			void removeNetworkObject(NetworkObject* nO);
 
+			std::optional<NetworkObject*> getNetworkObject(int netId);
+			std::optional<int> getNetworkId(NetworkObject* nO);
 
-class LinkingContext {
-public:
-	void addNetworkObject(NetworkObject* nO);
-	void removeNetworkObject(NetworkObject* nO);
+		private:
+			std::map<int, NetworkObject*> m_idToPointer;
+			std::map<NetworkObject*, int> m_pointerToId;
 
-	std::optional<NetworkObject*> getNetworkObject(int netId);
-	std::optional<int> getNetworkId(NetworkObject* nO);
+			int m_nextNetworkID;
 
-private:
-	std::map<int, NetworkObject*> m_idToPointer;
-	std::map<NetworkObject*, int> m_pointerToId;
-
-	int m_nextNetworkID;
-
-};
+		};
+	}
+}
 

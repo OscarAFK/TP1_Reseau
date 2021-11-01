@@ -3,20 +3,21 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
+set(CMAKE_CXX_STANDARD 17)
+
 project ("TP3_Reseau")
 
 add_subdirectory(includes)
 
 ##########La lib d'utilities
 set(Utils_TP3_SRC 
-                        "utils/framework.cpp"
                         "utils/NetworkObject.cpp"
                         "utils/Enemy.cpp"
                         "utils/Player.cpp"
 						)
 
 set(Utils_TP3_HEADERS 
-							"utils/framework.h"
+							"utils/frameworkTP3.h"
                             "utils/NetworkObject.h"
                             "utils/Enemy.h"
                             "utils/Player.h")
@@ -41,7 +42,7 @@ set(TP3_libReplication_HEADERS
 						)
 
 add_library(TP3_libReplication STATIC ${TP3_libReplication_SRC} ${TP3_libReplication_HEADERS})
-target_link_libraries( TP3_libReplication PUBLIC TP1_libSocket TP2_libSerializer)
+target_link_libraries( TP3_libReplication PUBLIC TP1_libSocket TP2_libSerializer Utils_TP3)
 target_include_directories(TP3_libReplication PUBLIC libReplication)
 
 ##########

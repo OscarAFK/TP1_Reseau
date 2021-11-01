@@ -1,7 +1,7 @@
 #pragma once
 
 #include <map>
-#include <framework.h>
+#include <frameworkTP3.h>
 #include <NetworkObject.h>
 #include <optional>
 #include <vector>
@@ -9,26 +9,31 @@
 #include <unordered_set>
 #include <ClassRegistry.h>
 
-enum class PacketType : uint8_t {
-    Hello = 0x00,
-    Sync = 0x01,
-    Bye = 0x02,
-    PacketType_Max
-};
+namespace uqac {
+    namespace replication {
 
-class ReplicationManager {
-public:
-    ReplicationManager(LinkingContext* linkingContext) : m_linkingContext(linkingContext) {};
-    ~ReplicationManager() = default;
+        enum class PacketType : uint8_t {
+            Hello = 0x00,
+            Sync = 0x01,
+            Bye = 0x02,
+            PacketType_Max
+        };
 
-    void Update(std::vector<NetworkObject*> alloR, Serializer *s, Deserializer* d);
-    void SendWorld(std::vector<NetworkObject*> alloR, Serializer* s);
-    void RecvWorld(Deserializer* d);
+        class ReplicationManager {
+        public:
+            ReplicationManager(LinkingContext* linkingContext) : m_linkingContext(linkingContext) {};
+            ~ReplicationManager() = default;
 
-private:
-    void SerializeObject(Serializer *s, NetworkObject* oR);
-    NetworkObject * DeserializeObject(Deserializer *d);
+            void Update(std::vector<NetworkObject*> alloR, serialization::Serializer* s, serialization::Deserializer* d);
+            void SendWorld(std::vector<NetworkObject*> alloR, serialization::Serializer* s);
+            void RecvWorld(serialization::Deserializer* d);
 
-    std::unordered_set<NetworkObject*> m_objectsReplicated;
-    LinkingContext* m_linkingContext;
-};
+        private:
+            void SerializeObject(serialization::Serializer* s, NetworkObject* oR);
+            NetworkObject* DeserializeObject(serialization::Deserializer* d);
+
+            std::unordered_set<NetworkObject*> m_objectsReplicated;
+            LinkingContext* m_linkingContext;
+        };
+    }
+}

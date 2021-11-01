@@ -3,5 +3,5 @@
 
 
 void main() {
-	LinkingContext lC = LinkingContext();
+	uqac::replication::LinkingContext lC = uqac::replication::LinkingContext();
 }

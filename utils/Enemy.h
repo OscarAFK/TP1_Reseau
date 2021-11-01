@@ -1,28 +1,33 @@
 #pragma once
 #include "NetworkObject.h"
 
-enum class typeEnemy : uint8_t
-{
-	Sbire = 0x00,
-	Boss = 0x01,
-	typeEnemy_Max,
-};
+namespace uqac {
+	namespace replication {
 
-class Enemy : public NetworkObject {
-public:
+		enum class typeEnemy : uint8_t
+		{
+			Sbire = 0x00,
+			Boss = 0x01,
+			typeEnemy_Max,
+		};
 
-	Enemy(Vector3 position, Quaternion rotation, int vie, typeEnemy tEnemy);
-	Enemy();
+		class Enemy : public NetworkObject {
+		public:
 
-	void Print();
-	void Write(Serializer * s);
-	void Read(Deserializer* d);
-	static Enemy* Create() { return new Enemy(); }
+			Enemy(Vector3 position, Quaternion rotation, int vie, typeEnemy tEnemy);
+			Enemy();
 
-private:
-	Vector3 m_position;
-	Quaternion m_rotation;
-	int m_vie;
-	typeEnemy m_tEnemy;
-};
+			void Print();
+			void Write(serialization::Serializer* s);
+			void Read(serialization::Deserializer* d);
+			static Enemy* Create() { return new Enemy(); }
 
+		private:
+			Vector3 m_position;
+			Quaternion m_rotation;
+			int m_vie;
+			typeEnemy m_tEnemy;
+		};
+
+	}
+}
