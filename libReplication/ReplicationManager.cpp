@@ -3,18 +3,18 @@
 namespace uqac {
 	namespace replication {
 
-		void ReplicationManager::Update(std::vector<NetworkObject*> alloR, serialization::Serializer* s, serialization::Deserializer* d)
+		void ReplicationManager::Update(std::vector<utilsTP3::NetworkObject*> alloR, serialization::Serializer* s, serialization::Deserializer* d)
 		{
 			SendWorld(alloR, s);
 
 			RecvWorld(d);
 		}
 
-		void ReplicationManager::SendWorld(std::vector<NetworkObject*> alloR, serialization::Serializer* s)
+		void ReplicationManager::SendWorld(std::vector<utilsTP3::NetworkObject*> alloR, serialization::Serializer* s)
 		{
 			/////////On réplique le monde
 			//Tout les objets à répliquer
-			for each (NetworkObject * oR in alloR)
+			for each (utilsTP3::NetworkObject * oR in alloR)
 			{
 				SerializeObject(s, oR);
 			}
@@ -33,31 +33,31 @@ namespace uqac {
 			}
 		}
 
-		void ReplicationManager::SerializeObject(serialization::Serializer* s, NetworkObject* oR)
+		void ReplicationManager::SerializeObject(serialization::Serializer* s, utilsTP3::NetworkObject* oR)
 		{
 			//Serialize the network ID
 			std::optional<int> nO = m_linkingContext->getNetworkId(oR);
 			s->Serialize(*nO);
 
 			//Serialize the class ID
-			oR->NetworkObject::Write(s);
+			oR->utilsTP3::NetworkObject::Write(s);
 
 			//Serialize the object
 			oR->Write(s);
 		}
 
-		NetworkObject* ReplicationManager::DeserializeObject(serialization::Deserializer* d)
+		utilsTP3::NetworkObject* ReplicationManager::DeserializeObject(serialization::Deserializer* d)
 		{
 			int nId = d->Read<int>();
 			int cId = d->Read<int>();
 
-			std::optional<NetworkObject*> nO = m_linkingContext->getNetworkObject(nId);
+			std::optional<utilsTP3::NetworkObject*> nO = m_linkingContext->getNetworkObject(nId);
 			if (!nO) {
-				nO = ClassRegistry::Get().Create(ClassID(cId));
-				m_linkingContext->addNetworkObject(*nO);
+				nO = ClassRegistry::Get().Create(utils::ClassID(cId));
+				m_linkingContext->addNetworkObject(nO.value());
 			}
-			(*nO)->Read(d);
-			return (*nO);
+			nO.value()->Read(d);
+			return (nO.value());
 		}
 	}
 }

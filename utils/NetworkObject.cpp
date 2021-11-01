@@ -1,7 +1,7 @@
 #include "NetworkObject.h"
 
 namespace uqac {
-	namespace utils {
+	namespace utilsTP3 {
 
 		void NetworkObject::Write(serialization::Serializer* s)
 		{

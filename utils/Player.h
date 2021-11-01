@@ -1,8 +1,9 @@
 #pragma once
-#include "NetworkObject.h"
-namespace uqac {
-	namespace utils {
+#include <NetworkObject.h>
 
+namespace uqac {
+	namespace utilsTP3 {
+		using namespace utils;
 		class Player : public NetworkObject {
 		public:
 

@@ -1,10 +1,17 @@
 #include "Enemy.h"
 
 namespace uqac {
-	namespace utils {
+	namespace utilsTP3 {
 
 		Enemy::Enemy(Vector3 position, Quaternion rotation, int vie, typeEnemy tEnemy) :
 			NetworkObject(ClassID::Enemy), m_position(position), m_rotation(rotation), m_vie(vie), m_tEnemy(tEnemy) {}
+
+		Enemy Enemy::generateRandomEnemy()
+		{
+			auto randomPos = Vector3(randomInt(-500, 500), randomInt(-500, 500), randomInt(0, 100));
+			auto randomRot = Quaternion(0.577, -0.240, 0.577, 0.526);									//Not random, but working
+			return Enemy(randomPos, randomRot, randomInt(0, 1000),typeEnemy(randomInt(0, 2)));
+		}
 
 		void Enemy::Print() {
 			std::string stringType = m_tEnemy == typeEnemy::Sbire ? "Sbire" : "Boss";

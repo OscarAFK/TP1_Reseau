@@ -8,9 +8,9 @@ namespace uqac {
 			return cR;
 		}
 
-		NetworkObject* ClassRegistry::Create(ClassID classID)
+		utilsTP3::NetworkObject* ClassRegistry::Create(utils::ClassID classID)
 		{
-			std::function<NetworkObject* ()> constructor = m_idToConstructors[classID];
+			std::function<utilsTP3::NetworkObject* ()> constructor = m_idToConstructors[classID];
 			return constructor();
 		}
 	}

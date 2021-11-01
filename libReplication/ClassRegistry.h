@@ -14,11 +14,11 @@ namespace uqac {
 			}
 
 			static ClassRegistry& Get();
-			NetworkObject* Create(ClassID classID);
+			utilsTP3::NetworkObject* Create(utils::ClassID classID);
 
 		private:
 			ClassRegistry() {}
-			std::map<ClassID, std::function<NetworkObject* ()>> m_idToConstructors;
+			std::map<utils::ClassID, std::function<utilsTP3::NetworkObject* ()>> m_idToConstructors;
 
 		};
 	}

@@ -8,15 +8,15 @@ namespace uqac {
 	namespace replication {
 		class LinkingContext {
 		public:
-			void addNetworkObject(NetworkObject* nO);
-			void removeNetworkObject(NetworkObject* nO);
+			void addNetworkObject(utilsTP3::NetworkObject* nO);
+			void removeNetworkObject(utilsTP3::NetworkObject* nO);
 
-			std::optional<NetworkObject*> getNetworkObject(int netId);
-			std::optional<int> getNetworkId(NetworkObject* nO);
+			std::optional<utilsTP3::NetworkObject*> getNetworkObject(int netId);
+			std::optional<int> getNetworkId(utilsTP3::NetworkObject* nO);
 
+			std::map<int, utilsTP3::NetworkObject*> m_idToPointer;
+			std::map<utilsTP3::NetworkObject*, int> m_pointerToId;
 		private:
-			std::map<int, NetworkObject*> m_idToPointer;
-			std::map<NetworkObject*, int> m_pointerToId;
 
 			int m_nextNetworkID;
 

@@ -24,15 +24,15 @@ namespace uqac {
             ReplicationManager(LinkingContext* linkingContext) : m_linkingContext(linkingContext) {};
             ~ReplicationManager() = default;
 
-            void Update(std::vector<NetworkObject*> alloR, serialization::Serializer* s, serialization::Deserializer* d);
-            void SendWorld(std::vector<NetworkObject*> alloR, serialization::Serializer* s);
+            void Update(std::vector<utilsTP3::NetworkObject*> alloR, serialization::Serializer* s, serialization::Deserializer* d);
+            void SendWorld(std::vector<utilsTP3::NetworkObject*> alloR, serialization::Serializer* s);
             void RecvWorld(serialization::Deserializer* d);
 
         private:
-            void SerializeObject(serialization::Serializer* s, NetworkObject* oR);
-            NetworkObject* DeserializeObject(serialization::Deserializer* d);
+            void SerializeObject(serialization::Serializer* s, utilsTP3::NetworkObject* oR);
+            utilsTP3::NetworkObject* DeserializeObject(serialization::Deserializer* d);
 
-            std::unordered_set<NetworkObject*> m_objectsReplicated;
+            std::unordered_set<utilsTP3::NetworkObject*> m_objectsReplicated;
             LinkingContext* m_linkingContext;
         };
     }

@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <stdlib.h>     /* srand, rand */
 
 namespace uqac {
 	namespace utils {
@@ -10,5 +11,7 @@ namespace uqac {
 			Enemy = 0x01,
 			ClassID_Max
 		};
+
+		float randomInt(int min, int max);
 	}
 }

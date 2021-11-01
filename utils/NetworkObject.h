@@ -5,7 +5,8 @@
 #include <Deserializer.h>
 
 namespace uqac {
-	namespace utils {
+	namespace utilsTP3 {
+		using namespace utils;
 
 		class NetworkObject {
 		public:

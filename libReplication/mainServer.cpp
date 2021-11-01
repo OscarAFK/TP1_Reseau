@@ -7,8 +7,28 @@ void main() {
 
 	auto rM = uqac::replication::ReplicationManager(&lC);
 
-	std::vector<uqac::utils::NetworkObject*> world;
-	//world.push_back(new uqac::replication::Enemy())
+	std::vector<uqac::utilsTP3::NetworkObject*> world;
+	world.push_back(&uqac::utilsTP3::Enemy::generateRandomEnemy());
+	world.push_back(&uqac::utilsTP3::Enemy::generateRandomEnemy());
+	world.push_back(&uqac::utilsTP3::Enemy::generateRandomEnemy());
 
-	//rM.SendWorld();
+	for each (auto e in world)
+	{
+		e->Print();
+	}
+
+	uqac::serialization::Serializer s = uqac::serialization::Serializer();
+
+	rM.SendWorld(world, &s);
+
+	uqac::serialization::Deserializer d = uqac::serialization::Deserializer(s.getContainer(), s.getContainer()->size());
+
+	rM.RecvWorld(&d);
+
+	for (int i = 0; i<3; i++)
+	{
+		auto nO = lC.getNetworkObject(i);
+		if (nO)
+			nO.value()->Print();
+	}
 }

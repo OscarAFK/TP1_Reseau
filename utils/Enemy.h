@@ -1,8 +1,9 @@
 #pragma once
-#include "NetworkObject.h"
+#include <NetworkObject.h>
 
 namespace uqac {
-	namespace utils {
+	namespace utilsTP3 {
+		using namespace utils;
 
 		enum class typeEnemy : uint8_t
 		{
@@ -16,6 +17,8 @@ namespace uqac {
 
 			Enemy(Vector3 position, Quaternion rotation, int vie, typeEnemy tEnemy);
 			Enemy();
+
+			static Enemy generateRandomEnemy();
 
 			void Print();
 			void Write(serialization::Serializer* s);
