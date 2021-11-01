@@ -1,7 +1,7 @@
 #pragma once
 #include "NetworkObject.h"
 namespace uqac {
-	namespace replication {
+	namespace utils {
 
 		class Player : public NetworkObject {
 		public:

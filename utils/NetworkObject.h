@@ -5,7 +5,7 @@
 #include <Deserializer.h>
 
 namespace uqac {
-	namespace replication {
+	namespace utils {
 
 		class NetworkObject {
 		public:

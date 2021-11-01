@@ -1,7 +1,7 @@
 #include "NetworkObject.h"
 
 namespace uqac {
-	namespace replication {
+	namespace utils {
 
 		void NetworkObject::Write(serialization::Serializer* s)
 		{

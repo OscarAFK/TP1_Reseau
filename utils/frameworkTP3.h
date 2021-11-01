@@ -2,7 +2,7 @@
 #include <cstdint>
 
 namespace uqac {
-	namespace replication {
+	namespace utils {
 
 		enum class ClassID : uint8_t
 		{

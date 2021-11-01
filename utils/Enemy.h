@@ -2,7 +2,7 @@
 #include "NetworkObject.h"
 
 namespace uqac {
-	namespace replication {
+	namespace utils {
 
 		enum class typeEnemy : uint8_t
 		{

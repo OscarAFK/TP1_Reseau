@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 namespace uqac {
-	namespace replication {
+	namespace utils {
 
 		Enemy::Enemy(Vector3 position, Quaternion rotation, int vie, typeEnemy tEnemy) :
 			NetworkObject(ClassID::Enemy), m_position(position), m_rotation(rotation), m_vie(vie), m_tEnemy(tEnemy) {}
