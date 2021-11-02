@@ -8,6 +8,8 @@ namespace uqac {
 	namespace replication {
 		class LinkingContext {
 		public:
+			LinkingContext();
+
 			void addNetworkObject(utilsTP3::NetworkObject* nO);
 			void removeNetworkObject(utilsTP3::NetworkObject* nO);
 

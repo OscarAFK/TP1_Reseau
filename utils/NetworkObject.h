@@ -11,15 +11,13 @@ namespace uqac {
 		class NetworkObject {
 		public:
 
-			NetworkObject(ClassID classID) : m_classID(classID) {};
 			NetworkObject() = default;
 			~NetworkObject() = default;
 
 			virtual void Print() = 0;
-			virtual void Write(serialization::Serializer* s);
-			virtual void Read(serialization::Deserializer* d);
-
-			ClassID m_classID;
+			virtual void Write(serialization::Serializer* s) = 0;
+			virtual void Read(serialization::Deserializer* d) = 0;
+			virtual uint8_t GetClassId() = 0;
 		};
 	}
 }

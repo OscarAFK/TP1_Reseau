@@ -24,40 +24,40 @@ namespace uqac {
 		{
 			/////////On reçoit le monde
 			//On vérifie le type du packet
-			PacketType pTRecv = PacketType(d->Read<uint8_t>());
-			if (pTRecv == PacketType::Sync) {
-				while (!d->isBufferCompletelyRead()) {
-					auto nO = DeserializeObject(d);
-					m_objectsReplicated.insert(nO);
-				}
+
+			while (!d->isBufferCompletelyRead()) {
+				DeserializeObject(d);
 			}
+
 		}
 
 		void ReplicationManager::SerializeObject(serialization::Serializer* s, utilsTP3::NetworkObject* oR)
 		{
 			//Serialize the network ID
-			std::optional<int> nO = m_linkingContext->getNetworkId(oR);
+			std::optional<uint32_t> nO = m_linkingContext->getNetworkId(oR);
 			s->Serialize(*nO);
 
 			//Serialize the class ID
-			oR->utilsTP3::NetworkObject::Write(s);
+			uint8_t cId = (uint8_t)oR->GetClassId();
+			s->Serialize(cId);
 
 			//Serialize the object
 			oR->Write(s);
 		}
 
-		utilsTP3::NetworkObject* ReplicationManager::DeserializeObject(serialization::Deserializer* d)
+		void ReplicationManager::DeserializeObject(serialization::Deserializer* d)
 		{
 			int nId = d->Read<int>();
-			int cId = d->Read<int>();
+			int cId = d->Read<uint8_t>();
 
 			std::optional<utilsTP3::NetworkObject*> nO = m_linkingContext->getNetworkObject(nId);
 			if (!nO) {
-				nO = ClassRegistry::Get().Create(utils::ClassID(cId));
+				nO = ClassRegistry::Get().Create(cId);
 				m_linkingContext->addNetworkObject(nO.value());
 			}
 			nO.value()->Read(d);
-			return (nO.value());
+
+			m_objectsReplicated.insert(nO.value());
 		}
 	}
 }

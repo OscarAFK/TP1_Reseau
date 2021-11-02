@@ -2,6 +2,9 @@
 #include <map>
 #include <NetworkObject.h>
 #include <functional>
+#include <Enemy.h>
+#include <PlayerTP3.h>
+#include <NetworkObject.h>
 
 namespace uqac {
 	namespace replication {
@@ -14,11 +17,14 @@ namespace uqac {
 			}
 
 			static ClassRegistry& Get();
-			utilsTP3::NetworkObject* Create(utils::ClassID classID);
+			utilsTP3::NetworkObject* Create(uint8_t classID);
 
 		private:
-			ClassRegistry() {}
-			std::map<utils::ClassID, std::function<utilsTP3::NetworkObject* ()>> m_idToConstructors;
+			ClassRegistry() { PopulateIdToConstructors(); }
+
+			void PopulateIdToConstructors();
+
+			std::map<uint8_t, std::function<utilsTP3::NetworkObject* ()>> m_idToConstructors;
 
 		};
 	}

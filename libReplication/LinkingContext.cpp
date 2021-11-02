@@ -2,6 +2,8 @@
 
 namespace uqac {
     namespace replication {
+        LinkingContext::LinkingContext() : m_nextNetworkID(0) {}
+
 
         void LinkingContext::addNetworkObject(utilsTP3::NetworkObject* nO)
         {
@@ -19,12 +21,22 @@ namespace uqac {
 
         std::optional<utilsTP3::NetworkObject*> LinkingContext::getNetworkObject(int netId)
         {
-            return std::optional<utilsTP3::NetworkObject*>(m_idToPointer[netId]);
+            std::optional<utilsTP3::NetworkObject*> returnValue;
+            auto it = m_idToPointer.find(netId);
+            if (it != m_idToPointer.end())
+                returnValue = m_idToPointer[netId];
+            else returnValue = std::nullopt;
+            return returnValue;
         }
 
         std::optional<int> LinkingContext::getNetworkId(utilsTP3::NetworkObject* nO)
         {
-            return std::optional<int>(m_pointerToId[nO]);
+            std::optional<int> returnValue;
+            auto it = m_pointerToId.find(nO);
+            if (it != m_pointerToId.end())
+                returnValue = m_pointerToId[nO];
+            else returnValue = std::nullopt;
+            return returnValue;
         }
     }
 }

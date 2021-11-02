@@ -4,12 +4,14 @@ namespace uqac {
 	namespace utilsTP3 {
 
 		Enemy::Enemy(Vector3 position, Quaternion rotation, int vie, typeEnemy tEnemy) :
-			NetworkObject(ClassID::Enemy), m_position(position), m_rotation(rotation), m_vie(vie), m_tEnemy(tEnemy) {}
+			m_position(position), m_rotation(rotation), m_vie(vie), m_tEnemy(tEnemy) {}
+
+		Enemy::Enemy() : m_position(Vector3(0, 0, 0)), m_rotation(Quaternion(0, 0, 0, 1)), m_vie(0), m_tEnemy(typeEnemy::Boss){}
 
 		Enemy Enemy::generateRandomEnemy()
 		{
 			auto randomPos = Vector3(randomInt(-500, 500), randomInt(-500, 500), randomInt(0, 100));
-			auto randomRot = Quaternion(0.577, -0.240, 0.577, 0.526);									//Not random, but working
+			auto randomRot = Quaternion(0,0,0,1);									//Not random, but working
 			return Enemy(randomPos, randomRot, randomInt(0, 1000),typeEnemy(randomInt(0, 2)));
 		}
 
@@ -26,7 +28,7 @@ namespace uqac {
 
 			serialization::Compressor comp;
 
-			serialization::Vector3_32 posComp = comp.compressVector3_32(m_position, -500, 500, -500, 500, 0, 100, 4);
+			serialization::Vector3_32 posComp = comp.compressVector3_32(m_position, -500, 500, -500, 500, 0, 100, 3);
 			s->Serialize(posComp.x);
 			s->Serialize(posComp.y);
 			s->Serialize(posComp.z);
@@ -53,7 +55,7 @@ namespace uqac {
 			uint32_t posYComp = d->Read<uint32_t>();
 			uint32_t posZComp = d->Read<uint32_t>();
 			serialization::Vector3_32 posComp = serialization::Vector3_32(posXComp, posYComp, posZComp);
-			m_position = comp.decompressVector3_32(posComp, -500, 500, -500, 500, 0, 100, 4);
+			m_position = comp.decompressVector3_32(posComp, -500, 500, -500, 500, 0, 100, 3);
 
 			uint16_t rotXComp = d->Read<uint16_t>();
 			uint16_t rotYComp = d->Read<uint16_t>();
@@ -63,6 +65,10 @@ namespace uqac {
 
 			uint16_t vieComp = d->Read<uint16_t>();
 			m_vie = comp.decompressInt(vieComp, 0, 1000);
+		}
+		uint8_t Enemy::GetClassId()
+		{
+			return Enemy::m_classID;
 		}
 	}
 }

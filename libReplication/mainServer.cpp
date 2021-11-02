@@ -3,9 +3,11 @@
 #include <Enemy.h>
 
 void main() {
-	uqac::replication::LinkingContext lC = uqac::replication::LinkingContext();
+	uqac::replication::LinkingContext lCSend = uqac::replication::LinkingContext();
+	uqac::replication::LinkingContext lCRecv = uqac::replication::LinkingContext();
 
-	auto rM = uqac::replication::ReplicationManager(&lC);
+	auto rMSend = uqac::replication::ReplicationManager(&lCSend);
+	auto rMRecv = uqac::replication::ReplicationManager(&lCRecv);
 
 	std::vector<uqac::utilsTP3::NetworkObject*> world;
 	world.push_back(&uqac::utilsTP3::Enemy::generateRandomEnemy());
@@ -19,15 +21,15 @@ void main() {
 
 	uqac::serialization::Serializer s = uqac::serialization::Serializer();
 
-	rM.SendWorld(world, &s);
+	rMSend.SendWorld(world, &s);
 
 	uqac::serialization::Deserializer d = uqac::serialization::Deserializer(s.getContainer(), s.getContainer()->size());
 
-	rM.RecvWorld(&d);
+	rMRecv.RecvWorld(&d);
 
 	for (int i = 0; i<3; i++)
 	{
-		auto nO = lC.getNetworkObject(i);
+		auto nO = lCRecv.getNetworkObject(i);
 		if (nO)
 			nO.value()->Print();
 	}

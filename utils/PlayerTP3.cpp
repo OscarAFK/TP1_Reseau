@@ -1,13 +1,15 @@
-#include <Player.h>
+#include <PlayerTP3.h>
 
 namespace uqac {
 	namespace utilsTP3 {
 
 		Player::Player(Vector3 position, Vector3 taille, Quaternion rotation, int vie, int armure, float argent, char nom[128]) :
-			NetworkObject(ClassID::Player), m_position(position), m_taille(taille), m_rotation(rotation), m_vie(vie), m_armure(armure), m_argent(argent)
+			m_position(position), m_taille(taille), m_rotation(rotation), m_vie(vie), m_armure(armure), m_argent(argent)
 		{
 			std::copy(nom, nom + 128, m_nom);
 		}
+
+		Player::Player() : m_position(Vector3(0, 0, 0)), m_taille(Vector3(0, 0, 0)), m_rotation(Quaternion(0,0,0,1)), m_vie(0), m_armure(0), m_argent(0){}
 
 		void Player::Print() {
 			std::cout << "---Player summary---\n\nName: " << m_nom
@@ -85,6 +87,10 @@ namespace uqac {
 			std::copy(reinterpret_cast<char*>(nom.data()),
 				reinterpret_cast<char*>(nom.data()) + nom.size(),
 				m_nom);*/
+		}
+		uint8_t Player::GetClassId()
+		{
+			return Player::m_classID;
 		}
 	}
 }

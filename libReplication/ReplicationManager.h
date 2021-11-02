@@ -30,7 +30,7 @@ namespace uqac {
 
         private:
             void SerializeObject(serialization::Serializer* s, utilsTP3::NetworkObject* oR);
-            utilsTP3::NetworkObject* DeserializeObject(serialization::Deserializer* d);
+            void DeserializeObject(serialization::Deserializer* d);
 
             std::unordered_set<utilsTP3::NetworkObject*> m_objectsReplicated;
             LinkingContext* m_linkingContext;

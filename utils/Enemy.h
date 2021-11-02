@@ -15,6 +15,8 @@ namespace uqac {
 		class Enemy : public NetworkObject {
 		public:
 
+			enum { m_classID = ClassID::Enemy };
+
 			Enemy(Vector3 position, Quaternion rotation, int vie, typeEnemy tEnemy);
 			Enemy();
 
@@ -23,6 +25,7 @@ namespace uqac {
 			void Print();
 			void Write(serialization::Serializer* s);
 			void Read(serialization::Deserializer* d);
+			uint8_t GetClassId();
 			static Enemy* Create() { return new Enemy(); }
 
 		private:

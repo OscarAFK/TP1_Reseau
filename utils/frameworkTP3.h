@@ -12,6 +12,6 @@ namespace uqac {
 			ClassID_Max
 		};
 
-		float randomInt(int min, int max);
+		int randomInt(int min, int max);
 	}
 }

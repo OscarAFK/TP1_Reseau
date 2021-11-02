@@ -13,14 +13,15 @@ add_subdirectory(includes)
 set(Utils_TP3_SRC 
                         "utils/NetworkObject.cpp"
                         "utils/Enemy.cpp"
-                        "utils/Player.cpp"
+                        "utils/PlayerTP3.cpp"
+                        "utils/frameworkTP3.cpp"
 						)
 
 set(Utils_TP3_HEADERS 
 							"utils/frameworkTP3.h"
                             "utils/NetworkObject.h"
                             "utils/Enemy.h"
-                            "utils/Player.h")
+                            "utils/PlayerTP3.h")
 
 add_library(Utils_TP3 STATIC ${Utils_TP3_SRC} ${Utils_TP3_HEADERS})
 target_link_libraries( Utils_TP3 PUBLIC TP1_libSocket TP2_libSerializer)
