@@ -1,8 +1,27 @@
 #include <ReplicationManager.h>
 #include <LinkingContext.h>
 #include <Enemy.h>
+#include <PlayerTP3.h>
 
-void main() {
+#include <server.h>
+#include <client.h>
+
+int main(int argc, char** argv) {
+
+	// Validate the parameters
+	if (argc != 2) {
+		std::cout << "usage: " << argv[0] << " port" << std::endl;
+		return 1;
+	}
+
+	//On créer dans un premier temps un objet de type serveur, et on lance dans un nouveau thread l'attente de connexion.
+	std::shared_ptr<uqac::Server> my_server = std::make_shared<uqac::Server>("TCP", argv[1],
+		//A REFAIRE LES TROIS CALLBACKS
+		[](uqac::Connection* c) { std::cout << "Client connected." << std::endl; },
+		[&](uqac::Connection* c, char* recvBuffer) { std::cout << "Broadcasting message: " << recvBuffer << std::endl; my_server->broadcast(recvBuffer, c); },
+		[](uqac::Connection* c) { std::cout << "Client disconnected." << std::endl; });
+
+
 	uqac::replication::LinkingContext lCSend = uqac::replication::LinkingContext();
 	uqac::replication::LinkingContext lCRecv = uqac::replication::LinkingContext();
 
@@ -33,4 +52,18 @@ void main() {
 		if (nO)
 			nO.value()->Print();
 	}
+
+	return 0;
 }
+
+
+void UpdatePlayer(Player& player) {
+
+	Vector3 position();
+player = new Player(Vec )
+
+}
+
+
+
+

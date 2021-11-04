@@ -2,18 +2,43 @@
 
 namespace uqac {
 	namespace replication {
-
-		void ReplicationManager::Update(std::vector<utilsTP3::NetworkObject*> alloR, serialization::Serializer* s, serialization::Deserializer* d)
+		ReplicationManager::ReplicationManager(LinkingContext* linkingContext, std::string typeNetwork, std::string protocole, std::string addr, std::string port) : m_linkingContext(linkingContext)
 		{
-			SendWorld(alloR, s);
+			if (typeNetwork == "s")
+				m_network = std::make_shared<uqac::Server>(protocole, port);
+			else 
+				m_network = std::make_shared<uqac::Client>(protocole, addr, port);
+		}
+		
+		void ReplicationManager::Update(std::vector<utilsTP3::NetworkObject*> alloR, std::function<void(Connection*)> onConnect, std::function<void(Connection*, char*)> onRecv, std::function<void(Connection*)> onDisconnect)
+		{
+			serialization::Serializer s = uqac::serialization::Serializer();
 
-			RecvWorld(d);
+			SendWorld(alloR, &s);
+			auto sendBuff = s.getContainer();
+			std::string sSendBuff(sendBuff->begin(), sendBuff->end());
+			m_network->broadcast(sSendBuff);
+
+			std::string sRecvBuff;
+
+			auto onRecvReplicate = [&](uqac::Connection* c, char* recvBuffer) 
+			{
+				sRecvBuff.assign(recvBuffer);
+				onRecv(c, recvBuffer);
+			};
+
+			m_network->Listen(onConnect, onRecvReplicate, onDisconnect);
+
+			std::vector<char> recvBuff(sRecvBuff.begin(), sRecvBuff.end());
+
+			serialization::Deserializer d = uqac::serialization::Deserializer(&recvBuff, recvBuff.size());
+
+			RecvWorld(&d);
+
 		}
 
 		void ReplicationManager::SendWorld(std::vector<utilsTP3::NetworkObject*> alloR, serialization::Serializer* s)
 		{
-			/////////On réplique le monde
-			//Tout les objets à répliquer
 			for each (utilsTP3::NetworkObject * oR in alloR)
 			{
 				SerializeObject(s, oR);
@@ -22,9 +47,6 @@ namespace uqac {
 
 		void ReplicationManager::RecvWorld(serialization::Deserializer* d)
 		{
-			/////////On reçoit le monde
-			//On vérifie le type du packet
-
 			while (!d->isBufferCompletelyRead()) {
 				DeserializeObject(d);
 			}
