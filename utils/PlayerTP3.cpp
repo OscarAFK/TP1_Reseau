@@ -92,5 +92,43 @@ namespace uqac {
 		{
 			return Player::m_classID;
 		}
+
+		void Player::Randomize()
+		{
+			int i = uqac::utils::randomInt(1, 8);
+			switch (i)
+			{
+
+			case 1:
+				if (m_argent > 5)
+					this->m_argent = this->m_argent - uqac::utils::randomInt(1, 4);
+				break;
+
+			case 2:
+				if (m_vie > 5)
+					this->m_vie = this->m_vie - uqac::utils::randomInt(1, 4);
+				break;
+
+
+			case 3:
+				if (m_argent > 5)
+					this->m_armure = this->m_armure - uqac::utils::randomInt(1, 4);
+				break;
+
+
+			default:
+				this->m_position = Vector3(
+					this->m_position.x + uqac::utils::randomInt(-2, 2),
+					this->m_position.y + uqac::utils::randomInt(-2, 2),
+					this->m_position.z);
+				break;
+			}
+			
+
+			
+
+			
+			
+		}
 	}
 }

@@ -18,6 +18,8 @@ namespace uqac {
 			uint8_t GetClassId();
 			static Player* Create() { return new Player(); }
 
+			void Randomize();	// Randomize Value of the player
+
 		private:
 			Vector3 m_position;
 			Vector3 m_taille;

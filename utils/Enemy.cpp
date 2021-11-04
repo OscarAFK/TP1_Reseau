@@ -70,5 +70,25 @@ namespace uqac {
 		{
 			return Enemy::m_classID;
 		}
+		void Enemy::Randomize()
+		{
+			int i = uqac::utils::randomInt(1, 4);
+			switch (i)
+			{
+
+			case 2:
+				if (m_vie > 5)
+					this->m_vie = this->m_vie - uqac::utils::randomInt(1, 4);
+				break;
+
+
+			default:
+				this->m_position = Vector3(
+					this->m_position.x + uqac::utils::randomInt(-2, 2),
+					this->m_position.y + uqac::utils::randomInt(-2, 2),
+					this->m_position.z);
+				break;
+			}
+		}
 	}
 }

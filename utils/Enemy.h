@@ -27,6 +27,7 @@ namespace uqac {
 			void Read(serialization::Deserializer* d);
 			uint8_t GetClassId();
 			static Enemy* Create() { return new Enemy(); }
+			void Randomize();		// randomize value of the Enemy
 
 		private:
 			Vector3 m_position;
