@@ -1,0 +1,2 @@
+add_subdirectory(UQACNetwork)
+add_subdirectory(TP2_Reseau_Serialization)

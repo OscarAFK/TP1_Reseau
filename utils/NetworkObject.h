@@ -1,19 +1,23 @@
 #pragma once
-#include "framework.h"
+#include <frameworkTP3.h>
 #include <iostream>
-#include "../libSerializer/Serializer.h"
-#include "../libSerializer/Compressor.h"
-#include "../libSerializer/Deserializer.h"
+#include <Serializer.h>
+#include <Deserializer.h>
 
-class NetworkObject {
-public:
+namespace uqac {
+	namespace utilsTP3 {
+		using namespace utils;
 
-	NetworkObject(ClassID classID) : m_classID(classID) {};
-	~NetworkObject() = default;
+		class NetworkObject {
+		public:
 
-	virtual void Print() = 0;
-	virtual void Write(Serializer * s) = 0;
-	virtual void Read(Deserializer* d) = 0;
+			NetworkObject() = default;
+			~NetworkObject() = default;
 
-	ClassID m_classID;
-};
+			virtual void Print() = 0;
+			virtual void Write(serialization::Serializer* s) = 0;
+			virtual void Read(serialization::Deserializer* d) = 0;
+			virtual uint8_t GetClassId() = 0;
+		};
+	}
+}
