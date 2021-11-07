@@ -1,4 +1,4 @@
-#include "ClassRegistry.h"
+#include <include/ClassRegistry.h>
 
 namespace uqac {
 	namespace replication {

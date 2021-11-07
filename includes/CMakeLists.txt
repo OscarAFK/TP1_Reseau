@@ -1,2 +1,2 @@
-add_subdirectory(TP1_Reseau_Sockets)
+add_subdirectory(UQACNetwork)
 add_subdirectory(TP2_Reseau_Serialization)
