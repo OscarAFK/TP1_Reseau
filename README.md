@@ -10,4 +10,4 @@ Contributeurs:
 Pour utiliser le projet, téléchargez le en local, puis générez et configurez le projet avec Cmake.  
 Une fois cela fait, allez dans le dossier Build, puis ouvrez le fichier TP3_Reseau_Replication.sln avec Visual Studio 2019. Générez le projet, des fichiers .exe auront été crées dans le dossier Build\Debug.
 
-//AJOUTER LES INSTRUCTION POUR LE LANCEMENT DU PROGRAMME
+Un fichier TP3_Server.exe aura été créé. Lancez le pour voir le résultat d'une réplication.
